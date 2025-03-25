@@ -1,7 +1,7 @@
 {
   "name": "dapp",
   "private": true,
-  "version": "1.0.26",
+  "version": "1.0.27",
   "type": "module",
   "engines": {
     "node": ">=21.6.0"
@@ -32,13 +32,13 @@
   "dependencies": {
     "@axis-finance/abis": "0.0.3",
     "@axis-finance/auto-signer-provider": "^0.0.1",
-    "@axis-finance/cloak": "0.0.10",
-    "@axis-finance/curator-api": "0.0.20",
-    "@axis-finance/deployments": "0.0.6",
-    "@axis-finance/env": "0.0.10",
-    "@axis-finance/sdk": "0.0.31",
-    "@axis-finance/subgraph-client": "0.0.8",
-    "@axis-finance/types": "0.0.18",
+    "@axis-finance/cloak": "0.0.13",
+    "@axis-finance/curator-api": "0.0.23",
+    "@axis-finance/deployments": "0.0.9",
+    "@axis-finance/env": "0.0.13",
+    "@axis-finance/sdk": "0.0.34",
+    "@axis-finance/subgraph-client": "0.0.11",
+    "@axis-finance/types": "0.0.21",
     "@fleek-platform/sdk": "^3.5.1",
     "@helia/verified-fetch": "^2.3.1",
     "@openzeppelin/merkle-tree": "^1.0.6",
