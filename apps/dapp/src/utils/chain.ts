@@ -3,9 +3,9 @@ import { chains } from "@axis-finance/env";
 import { Chain } from "@axis-finance/types";
 
 import { environment } from "utils/environment";
-
+console.log("deployments", deployments);
 const activeChains = chains.activeChains(environment.isTestnet);
-
+console.log("activeChains", activeChains);
 export const getBlockExplorer = (chain: Chain) => {
   return {
     name: chain.blockExplorers?.default.name,
@@ -22,6 +22,7 @@ const CHAIN_NAME_MAP = {
   arbitrum: "arbitrum-one",
   mode: "mode-mainnet",
   "mantle-sepolia": "mantle-sepolia-testnet",
+  "blast-mainnet": "blast",
 } as const;
 
 export function getChainId(chainName?: string): number {

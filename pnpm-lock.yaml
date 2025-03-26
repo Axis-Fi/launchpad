@@ -39,20 +39,20 @@ importers:
         specifier: ^0.0.1
         version: 0.0.1(typescript@5.2.2)(viem@2.17.3)
       "@axis-finance/cloak":
-        specifier: 0.0.13
-        version: 0.0.13(viem@2.17.3)
+        specifier: 0.0.14
+        version: 0.0.14(viem@2.17.3)
       "@axis-finance/curator-api":
-        specifier: 0.0.23
-        version: 0.0.23(@tanstack/react-query@5.18.1)(postcss@8.5.3)(react@18.3.1)(typescript@5.2.2)(wagmi@2.5.2)
+        specifier: 0.0.25
+        version: 0.0.25(@tanstack/react-query@5.18.1)(postcss@8.5.3)(react@18.3.1)(typescript@5.2.2)(wagmi@2.5.2)
       "@axis-finance/deployments":
-        specifier: 0.0.9
-        version: 0.0.9
+        specifier: 0.0.10
+        version: 0.0.10
       "@axis-finance/env":
-        specifier: 0.0.13
-        version: 0.0.13(viem@2.17.3)
+        specifier: 0.0.14
+        version: 0.0.14(viem@2.17.3)
       "@axis-finance/sdk":
-        specifier: 0.0.34
-        version: 0.0.34(@tanstack/react-query@5.18.1)(@trpc/server@10.45.2)(postcss@8.5.3)(react@18.3.1)(typescript@5.2.2)(viem@2.17.3)(wagmi@2.5.2)(zod@3.24.2)
+        specifier: 0.0.36
+        version: 0.0.36(@tanstack/react-query@5.18.1)(@trpc/server@10.45.2)(postcss@8.5.3)(react@18.3.1)(typescript@5.2.2)(viem@2.17.3)(wagmi@2.5.2)(zod@3.24.2)
       "@axis-finance/subgraph-client":
         specifier: 0.0.11
         version: 0.0.11(@tanstack/react-query@5.18.1)(react@18.3.1)
@@ -426,6 +426,15 @@ importers:
         version: 8.4.0(postcss@8.5.3)(typescript@5.8.2)
 
 packages:
+  /@achingbrain/http-parser-js@0.5.8:
+    resolution:
+      {
+        integrity: sha512-7P8ukzL4jyh8Fho5tSfPBTzWJUZ0D7DxaW7ObObT5HTcljhjq9NN/qFg1yzPxq0VWRI/8qPnSUa1ofzzH/R9eQ==,
+      }
+    dependencies:
+      uint8arrays: 5.1.0
+    dev: false
+
   /@achingbrain/nat-port-mapper@4.0.2:
     resolution:
       {
@@ -513,24 +522,24 @@ packages:
       viem: 2.17.3(typescript@5.2.2)(zod@3.24.2)
     dev: false
 
-  /@axis-finance/cloak@0.0.13(viem@2.17.3):
+  /@axis-finance/cloak@0.0.14(viem@2.17.3):
     resolution:
       {
-        integrity: sha512-4PRgQo2nJScqcwZeJ+IaLNFyfWjSvJ/Sebua5poT2gnB4fXAccT0F+4lUvYikoanC0u25UJQCZjP2hvIBqOABQ==,
+        integrity: sha512-vGWRomS5TJk5b1Oeqsx+HgxirWJYoPsyGuLkJhGgo9O9iJdxvBPSgyVdSUoiqx+zpIRWuEtbiARWophuaYHcbQ==,
       }
     dependencies:
-      "@axis-finance/env": 0.0.13(viem@2.17.3)
+      "@axis-finance/env": 0.0.14(viem@2.17.3)
     transitivePeerDependencies:
       - viem
     dev: false
 
-  /@axis-finance/curator-api@0.0.23(@tanstack/react-query@5.18.1)(postcss@8.5.3)(react@18.3.1)(typescript@5.2.2)(wagmi@2.5.2):
+  /@axis-finance/curator-api@0.0.25(@tanstack/react-query@5.18.1)(postcss@8.5.3)(react@18.3.1)(typescript@5.2.2)(wagmi@2.5.2):
     resolution:
       {
-        integrity: sha512-hR1Jpup12s+5rOIdlpzbMI4eJitt37XIeBtpxdmVG0yzkEbtc4F28I32t1wYHL/gYgzEv+Nt9CCWcgTb3r94mg==,
+        integrity: sha512-FHTGurXo3YnX0ke3TPB0JxahY3YAzF9Ax+22Fx9ok4sS0KG85YGuQueSOqSZNU4D+nxuOAFZ3bYEf8ohWNlHqw==,
       }
     dependencies:
-      "@axis-finance/sdk": 0.0.34(@tanstack/react-query@5.18.1)(@trpc/server@10.45.2)(postcss@8.5.3)(react@18.3.1)(typescript@5.2.2)(viem@2.17.3)(wagmi@2.5.2)(zod@3.24.2)
+      "@axis-finance/sdk": 0.0.36(@tanstack/react-query@5.18.1)(@trpc/server@10.45.2)(postcss@8.5.3)(react@18.3.1)(typescript@5.2.2)(viem@2.17.3)(wagmi@2.5.2)(zod@3.24.2)
       "@trpc/server": 10.45.2
       cors: 2.8.5
       dotenv: 16.4.7
@@ -559,24 +568,24 @@ packages:
       - yaml
     dev: false
 
-  /@axis-finance/deployments@0.0.9:
+  /@axis-finance/deployments@0.0.10:
     resolution:
       {
-        integrity: sha512-ILSdb9OFZl79Lo4NUz1Shi/ZVON14R/1Bk+bjrqmPxQ6/0yXaFiasoYORiWhEya7OVreN3rWI+xbrT3m1P3b3w==,
+        integrity: sha512-0WVh+UxGonuSd0yr8h2fVSU408RWeIOnr6CcUKvlzzf0C1iWRKOvO1a+ganP4yPD18vHBk938MHbOn+R6bMdJw==,
       }
     dependencies:
       "@axis-finance/abis": 0.0.3
     dev: false
 
-  /@axis-finance/env@0.0.13(viem@2.17.3):
+  /@axis-finance/env@0.0.14(viem@2.17.3):
     resolution:
       {
-        integrity: sha512-4703UU+T1zj91QLcUlstvUA9JFmUF+vSrcD8yHqgLZz4zekihm8vHMRiO/oTT6H5kKGb0jW570cpMsbTu43EJg==,
+        integrity: sha512-yXf8k8X6DkebtNUqu6ReDKbfqhqm6Eb4duR4KNIzVAPOCa4q/Bih0qh+ChUjVWMebHOS6t++fh2Dmc+EGS4WXA==,
       }
     peerDependencies:
       viem: 2.17.3
     dependencies:
-      "@axis-finance/deployments": 0.0.9
+      "@axis-finance/deployments": 0.0.10
       viem: 2.17.3(typescript@5.2.2)(zod@3.24.2)
     dev: false
 
@@ -586,10 +595,10 @@ packages:
         integrity: sha512-xH6l+o3u+QxBqJRQeO7jQeetQhGSSgqS2VZ0+I5caDVSuMWk0S2w5xUb8qqz7VrAlEmDvoR3MJqC8xzXRPcQZg==,
       }
 
-  /@axis-finance/sdk@0.0.34(@tanstack/react-query@5.18.1)(@trpc/server@10.45.2)(postcss@8.5.3)(react@18.3.1)(typescript@5.2.2)(viem@2.17.3)(wagmi@2.5.2)(zod@3.24.2):
+  /@axis-finance/sdk@0.0.36(@tanstack/react-query@5.18.1)(@trpc/server@10.45.2)(postcss@8.5.3)(react@18.3.1)(typescript@5.2.2)(viem@2.17.3)(wagmi@2.5.2)(zod@3.24.2):
     resolution:
       {
-        integrity: sha512-PzdiKFpDNjl7/9lPPWx99wFQCb7cbw6/vpCF8PrapSnMyn0XZk0pXdph8xd1wwlw6JIbqySBB5ICxn2UR4KHpQ==,
+        integrity: sha512-Ha6Asqeh9uj/eT9wbLayffatIwaDY8ytrPJ6gBhbXbFaMRrr1arLVZR7fRgYxPyPbYNUZBDNKCem/KHwRLNsEg==,
       }
     peerDependencies:
       "@tanstack/react-query": 5.18.1
@@ -598,9 +607,9 @@ packages:
       wagmi: 2.5.2
     dependencies:
       "@axis-finance/abis": 0.0.3
-      "@axis-finance/cloak": 0.0.13(viem@2.17.3)
-      "@axis-finance/deployments": 0.0.9
-      "@axis-finance/env": 0.0.13(viem@2.17.3)
+      "@axis-finance/cloak": 0.0.14(viem@2.17.3)
+      "@axis-finance/deployments": 0.0.10
+      "@axis-finance/env": 0.0.14(viem@2.17.3)
       "@axis-finance/subgraph-client": 0.0.11(@tanstack/react-query@5.18.1)(react@18.3.1)
       "@axis-finance/types": 0.0.21(@tanstack/react-query@5.18.1)(postcss@8.5.3)(react@18.3.1)(typescript@5.2.2)
       "@fleek-platform/sdk": 3.6.2
@@ -4237,7 +4246,7 @@ packages:
       "@helia/interface": 5.2.1
       "@libp2p/interface": 2.7.0
       "@libp2p/peer-id": 5.1.0
-      "@multiformats/uri-to-multiaddr": 8.0.0
+      "@multiformats/uri-to-multiaddr": 8.1.0
       ipns: 10.0.2
       it-first: 3.0.7
       it-map: 3.1.2
@@ -4536,7 +4545,7 @@ packages:
     dependencies:
       "@chainsafe/is-ip": 2.1.0
       "@libp2p/crypto": 5.0.15
-      "@libp2p/http-fetch": 2.1.1
+      "@libp2p/http-fetch": 2.2.2
       "@libp2p/interface": 2.7.0
       "@libp2p/interface-internal": 2.3.9
       "@libp2p/keychain": 5.1.4
@@ -4925,23 +4934,26 @@ packages:
       uint8arraylist: 2.4.8
     dev: false
 
-  /@libp2p/http-fetch@2.1.1:
+  /@libp2p/http-fetch@2.2.2:
     resolution:
       {
-        integrity: sha512-alJ4sQn4ueKWBt2l/5sfLuRQ7u7plCkb43YsYzGkbtc01za4Er5DYas8Vtqjs5WtFsQTfWYok+4nqQNgnb7vyA==,
+        integrity: sha512-dMPo2pe2h/AHAljgwDEErdiB8JbiJM5b0LzuF/Yq4HcplfJZf33VtzUHN1n8x+3K+F8fntWUKN30SwSisSoVaw==,
       }
     dependencies:
+      "@achingbrain/http-parser-js": 0.5.8
       "@libp2p/crypto": 5.0.15
       "@libp2p/interface": 2.7.0
       "@libp2p/interface-internal": 2.3.9
       "@libp2p/peer-id": 5.1.0
       "@multiformats/multiaddr": 12.4.0
       "@multiformats/multiaddr-to-uri": 11.0.0
-      "@perseveranza-pets/milo": 0.2.1
+      http-cookie-agent: 6.0.8(tough-cookie@5.1.2)(undici@6.21.2)
       p-defer: 4.0.1
+      tough-cookie: 5.1.2
       uint8-varint: 2.0.4
       uint8arraylist: 2.4.8
       uint8arrays: 5.1.0
+      undici: 6.21.2
     dev: false
 
   /@libp2p/identify@3.0.27:
@@ -5984,10 +5996,10 @@ packages:
       murmurhash3js-revisited: 3.0.0
     dev: false
 
-  /@multiformats/uri-to-multiaddr@8.0.0:
+  /@multiformats/uri-to-multiaddr@8.1.0:
     resolution:
       {
-        integrity: sha512-86O+gY6JTnCv0O/IxTKV+1+GACoEBTr5Cfyh+FdzStWneviz2AZwLK8Hsys5dbfMgT//Vs7FolMiEHURlCel8w==,
+        integrity: sha512-NHFqdKEwJ0A6JDXzC645Lgyw72zWhbM1QfaaD00ZYRrNvtx64p1bD9aIrWZIhLWZN87/lsV4QkJSNRF3Fd3ryw==,
       }
     dependencies:
       "@multiformats/multiaddr": 12.4.0
@@ -6671,14 +6683,6 @@ packages:
       {
         integrity: sha512-HaW78NszGzRZd9SeoI3JD11JqY+lubnaOx7Pewj5pfjqWXOEATpeKIFb9Z4t2WBUK2iryiXX3lzWwmYWgUL0Ug==,
       }
-    dev: false
-
-  /@perseveranza-pets/milo@0.2.1:
-    resolution:
-      {
-        integrity: sha512-Q96Q1cdYfofu5Rbaj3z5HYzkhlDS+pljh/g+GX/JHr/TlodpDDxFZ1sVuQI6O3+rFdfrU5ScgD1kx4NyCYebbw==,
-      }
-    engines: { node: ">= 18.18.0" }
     dev: false
 
   /@pkgjs/parseargs@0.11.0:
@@ -10103,7 +10107,7 @@ packages:
       "@babel/types": 7.27.0
       "@types/babel__generator": 7.6.8
       "@types/babel__template": 7.4.4
-      "@types/babel__traverse": 7.20.6
+      "@types/babel__traverse": 7.20.7
 
   /@types/babel__generator@7.6.8:
     resolution:
@@ -10122,10 +10126,10 @@ packages:
       "@babel/parser": 7.27.0
       "@babel/types": 7.27.0
 
-  /@types/babel__traverse@7.20.6:
+  /@types/babel__traverse@7.20.7:
     resolution:
       {
-        integrity: sha512-r1bzfrm0tomOI8g1SzvCaQHo6Lcv6zu0EA+W2kHrt8dyrHQxGzBBL4kdkzIS+jBMV+EYcMAEAqXqYaLJq5rOZg==,
+        integrity: sha512-dkO5fhS7+/oos4ciWxyEyjWe48zmG6wbCheo/G2ZnHx4fs3EU6YC6UM8rk56gAjNJ9P3MTH2jo5jb92/K6wbng==,
       }
     dependencies:
       "@babel/types": 7.27.0
@@ -13087,7 +13091,6 @@ packages:
         integrity: sha512-jRR5wdylq8CkOe6hei19GGZnxM6rBGwFl3Bg0YItGDimvjGtAvdZk4Pu6Cl4u4Igsws4a1fd1Vq3ezrhn4KmFw==,
       }
     engines: { node: ">= 14" }
-    dev: true
 
   /aggregate-error@3.1.0:
     resolution:
@@ -13696,7 +13699,7 @@ packages:
       "@babel/template": 7.27.0
       "@babel/types": 7.27.0
       "@types/babel__core": 7.20.5
-      "@types/babel__traverse": 7.20.6
+      "@types/babel__traverse": 7.20.7
     dev: false
 
   /babel-plugin-macros@3.1.0:
@@ -14196,7 +14199,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001707
-      electron-to-chromium: 1.5.123
+      electron-to-chromium: 1.5.124
       node-releases: 2.0.19
       update-browserslist-db: 1.1.3(browserslist@4.24.4)
 
@@ -16256,10 +16259,10 @@ packages:
       - utf-8-validate
     dev: false
 
-  /electron-to-chromium@1.5.123:
+  /electron-to-chromium@1.5.124:
     resolution:
       {
-        integrity: sha512-refir3NlutEZqlKaBLK0tzlVLe5P2wDKS7UQt/3SpibizgsRAPOsqQC3ffw1nlv3ze5gjRQZYHoPymgVZkplFA==,
+        integrity: sha512-riELkpDUqBi00gqreV3RIGoowxGrfueEKBd6zPdOk/I8lvuFpBGNkYoHof3zUHbiTBsIU8oxdIIL/WNrAG1/7A==,
       }
 
   /elliptic@6.6.1:
@@ -18624,6 +18627,24 @@ packages:
       }
     dependencies:
       void-elements: 3.1.0
+    dev: false
+
+  /http-cookie-agent@6.0.8(tough-cookie@5.1.2)(undici@6.21.2):
+    resolution:
+      {
+        integrity: sha512-qnYh3yLSr2jBsTYkw11elq+T361uKAJaZ2dR4cfYZChw1dt9uL5t3zSUwehoqqVb4oldk1BpkXKm2oat8zV+oA==,
+      }
+    engines: { node: ">=18.0.0" }
+    peerDependencies:
+      tough-cookie: ^4.0.0 || ^5.0.0
+      undici: ^5.11.0 || ^6.0.0
+    peerDependenciesMeta:
+      undici:
+        optional: true
+    dependencies:
+      agent-base: 7.1.3
+      tough-cookie: 5.1.2
+      undici: 6.21.2
     dev: false
 
   /http-errors@2.0.0:
@@ -23927,7 +23948,7 @@ packages:
       "@babel/traverse": 7.27.0
       "@babel/types": 7.27.0
       "@types/babel__core": 7.20.5
-      "@types/babel__traverse": 7.20.6
+      "@types/babel__traverse": 7.20.7
       "@types/doctrine": 0.0.9
       "@types/resolve": 1.20.6
       doctrine: 3.0.0
@@ -26605,7 +26626,6 @@ packages:
       {
         integrity: sha512-DTjUVvxckL1fIoPSb3KE7ISNtkWSawZdpfxGxwiIrZoO6EbHVDXXUIlIuWympPaeS+BLGyggozX/HTMsRAdsoA==,
       }
-    dev: true
 
   /tldts@6.1.85:
     resolution:
@@ -26615,7 +26635,6 @@ packages:
     hasBin: true
     dependencies:
       tldts-core: 6.1.85
-    dev: true
 
   /tmp@0.0.33:
     resolution:
@@ -26703,7 +26722,6 @@ packages:
     engines: { node: ">=16" }
     dependencies:
       tldts: 6.1.85
-    dev: true
 
   /tr46@0.0.3:
     resolution:
@@ -27330,6 +27348,14 @@ packages:
     engines: { node: ">=14.0" }
     dependencies:
       "@fastify/busboy": 2.1.1
+    dev: false
+
+  /undici@6.21.2:
+    resolution:
+      {
+        integrity: sha512-uROZWze0R0itiAKVPsYhFov9LxrPMHLMEQFszeI2gCN6bnIIZ8twzBCJcN2LJrBBLfrP0t1FW0g+JmKVl8Vk1g==,
+      }
+    engines: { node: ">=18.17" }
     dev: false
 
   /unfetch@4.2.0:
