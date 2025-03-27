@@ -5,8 +5,7 @@ import { ipfsServers } from "@axis-finance/env";
 import { environment } from "utils/environment";
 import { sdk } from "utils/sdk";
 
-const { url: serverUrl } =
-  ipfsServers[environment.current] ?? ipfsServers.staging;
+const { url: serverUrl } = ipfsServers[environment.current] ?? ipfsServers;
 
 const trpc = createTRPCProxyClient<AppRouter>({
   links: [

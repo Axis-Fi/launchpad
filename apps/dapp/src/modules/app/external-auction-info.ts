@@ -1,8 +1,8 @@
 import type { AuctionInfo } from "@axis-finance/types";
 
 export const externalAuctionInfo: Record<string, AuctionInfo> = {
-  "blast-0xba000055df41da8584e1251bcdf45e91acb61108-1": {
-    key: "blast-0xba000055df41da8584e1251bcdf45e91acb61108-1",
+  "blast-mainnet-0xba000055df41da8584e1251bcdf45e91acb61108-1": {
+    key: "blast-mainnet-0xba000055df41da8584e1251bcdf45e91acb61108-1",
     name: "MACHI",
     description:
       "MACHI IBLV is the liquidity bootstrapping event that will kickstart the new DeFi primitive on blast. The event will be capped at $5M, with deposits denominated in USDB.",
@@ -35,8 +35,8 @@ export const externalAuctionInfo: Record<string, AuctionInfo> = {
     ],
     allowlist: [],
   },
-  "blast-0xba000055df41da8584e1251bcdf45e91acb61108-2": {
-    key: "blast-0xba000055df41da8584e1251bcdf45e91acb61108-2",
+  "blast-mainnet-0xba000055df41da8584e1251bcdf45e91acb61108-2": {
+    key: "blast-mainnet-0xba000055df41da8584e1251bcdf45e91acb61108-2",
     name: "MindPalace",
     description:
       "MindPalace aims to lead and pave the way for the world in RND on AI agents. If the physical world was to end tomorrow, we would like there to still remain an EXACT digital copy of you and everybody else to continue living in our take on the metaverse. Weekly tournaments for your AI copies to go head to head to compete for survival and $AI.",
@@ -69,8 +69,8 @@ export const externalAuctionInfo: Record<string, AuctionInfo> = {
     ],
     allowlist: [],
   },
-  "blast-0xba000055df41da8584e1251bcdf45e91acb61108-4": {
-    key: "blast-0xba000055df41da8584e1251bcdf45e91acb61108-4",
+  "blast-mainnet-0xba000055df41da8584e1251bcdf45e91acb61108-4": {
+    key: "blast-mainnet-0xba000055df41da8584e1251bcdf45e91acb61108-4",
     name: "FlappyETH",
     description:
       "FlappyEth is a Play-to-Earn blockchain based game developed by Devsbased Labs, where skill and strategy come together for fun and rewards. Revenues are distributed to the Prize Fund, rewarding top players for their achievements. Devsbased Labs is committed to creating secure, enjoyable games while empowering players to benefit from protocol revenues.",

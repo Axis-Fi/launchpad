@@ -1,8 +1,11 @@
 {
   "name": "dapp",
   "private": true,
-  "version": "1.0.25",
+  "version": "1.0.27",
   "type": "module",
+  "engines": {
+    "node": ">=21.6.0"
+  },
   "scripts": {
     "dev": "vite --port ${VITE_APP_PORT-5173}",
     "dev-quiet": "vite --port ${VITE_APP_PORT-5173} --logLevel error",
@@ -31,6 +34,7 @@
     "@axis-finance/abis": "0.0.3",
     "@axis-finance/auto-signer-provider": "^0.0.1",
     "@axis-finance/cloak": "0.0.14",
+    "@axis-finance/curator-api": "0.0.25",
     "@axis-finance/deployments": "0.0.10",
     "@axis-finance/env": "0.0.14",
     "@axis-finance/sdk": "0.0.36",

@@ -116,13 +116,16 @@ export function useAuction(
   }
 
   const formatted = formatAuction(rawAuction, auctionType);
+  const externalInfo = externalAuctionInfo[auction.id];
 
   const preparedAuction = {
     ...auction,
     bids: auction.bids.sort((a, b) => +b.blockTimestamp - +a.blockTimestamp), //Sort by time descending
     auctionType,
     formatted,
-    info: metadataQuery.isSuccess ? metadataQuery.data?.info : auction.info,
+    info:
+      externalInfo ??
+      (metadataQuery.isSuccess ? metadataQuery.data?.info : auction.info),
     callbacks: auction.callbacks as `0x${string}`, // Has been checked above
   };
 
