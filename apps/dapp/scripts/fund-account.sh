@@ -1,8 +1,8 @@
 #!/bin/bash
 
-[ -f .env ] && source .env
+#[ -f .env.e2e ] && source .env.e2e
 
-ADDRESS=${1:-$FORK_ADDRESS}
+ADDRESS=${1:-$TEST_WALLET}
 AMOUNT=${2:-10}
 PORT=${ANVIL_PORT:-8545}
 

@@ -25,6 +25,9 @@ jobs:
           node-version: "21.6.0"
           cache: "pnpm"
 
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+
       - name: Clean up potential stale Xvfb locks (Cypress e2e tests)
         run: |
           sudo rm -f /tmp/.X*-lock
@@ -47,7 +50,7 @@ jobs:
         run: pnpm i --frozen-lockfile
 
       - name: Install Cypress (if not cached already)
-        run: pnpx cypress install
+        run: pnpm cypress install
 
       - name: Run tests
         run: pnpm test
