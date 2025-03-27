@@ -50,6 +50,7 @@ export function AuctionBidInputSingle({
                 <TokenAmountInput
                   {...field}
                   disabled={disabled}
+                  data-testid="bid-amount-input"
                   label="Spend Amount"
                   message={
                     showAmountOut

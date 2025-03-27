@@ -86,6 +86,7 @@ export function DeployTokenPage() {
           <h4>Mint</h4>
           <LabelWrapper content="Address" className="mt-2">
             <Input
+              data-testid="mint-address"
               value={resolvedAddress}
               onChange={(e) =>
                 isAddress(e.target.value) && setAddress(e.target.value)

@@ -8,7 +8,7 @@ describe("fixed price launch", () => {
     cy.visit(URLS.HOME);
     cy.connectWallet();
 
-    cy.visit(URLS.CREATE_LAUNCH);
+    cy.visit(URLS.CREATE_LAUNCH());
 
     // Fill in the initial text fields
     cy.get(CREATE_LAUNCH.NAME_FIELD).type("Test Launch");
@@ -70,19 +70,22 @@ describe("fixed price launch", () => {
 
     // Approve payout token spend
     cy.get(CREATE_LAUNCH.SUBMIT_BUTTON, {
-      timeout: TIME.TRANSACTION_TIMEOUT,
+      timeout: TIME.TXN_TIMEOUT,
     }).click();
 
     // Give the txn chance to complete before pressing the submit button again
     cy.contains("Deploy your Auction", {
-      timeout: TIME.TRANSACTION_TIMEOUT,
+      timeout: TIME.TXN_TIMEOUT,
     }).should("exist");
+
+    // hack
+    cy.wait(3000);
 
     // Upload launch metadata to IPFS and sign transaction
     cy.get(CREATE_LAUNCH.SUBMIT_BUTTON).click();
 
     cy.contains("View your Launch", {
-      timeout: TIME.TRANSACTION_TIMEOUT,
+      timeout: TIME.TXN_TIMEOUT,
     }).should("exist");
   });
 });

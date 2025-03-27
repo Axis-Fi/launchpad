@@ -22,7 +22,7 @@
     "e2e": "./scripts/e2e.sh",
     "e2e:open": "./scripts/e2e-open.sh",
     "@smoke": "./scripts/smoke.sh",
-    "smoke:mainnet": "pnpm env:mainnet -- pnpm @smoke",
+    "smoke:mainnet": "#pnpm env:mainnet -- pnpm @smoke",
     "smoke:testnet": "pnpm env:testnet -- pnpm @smoke",
     "smoke": "concurrently --group --names 'mainnet,testnet' --prefix-colors 'cyan,green' --kill-others-on-fail --timings --handle-input 'pnpm smoke:mainnet' 'pnpm smoke:testnet'",
     "test:unit": "vitest run",
