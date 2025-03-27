@@ -10,7 +10,7 @@ describe("smoke tests", () => {
   });
 
   it("renders create launch page", () => {
-    cy.visit(URLS.CREATE_LAUNCH);
+    cy.visit(URLS.CREATE_LAUNCH());
     cy.shouldRenderPageWithId("__AXIS_CREATE_LAUNCH_PAGE__");
   });
 

@@ -91,19 +91,26 @@ export function TransactionDialog({
     <DialogRoot open={open} onOpenChange={onOpenChange}>
       {props.triggerContent && (
         <DialogTrigger className="w-full max-w-lg" disabled={props.disabled}>
-          <Button className="w-full max-w-sm" disabled={props.disabled}>
+          <Button
+            data-testid="tx-dialog-trigger-button"
+            className="w-full max-w-sm"
+            disabled={props.disabled}
+          >
             {props.triggerContent}
           </Button>
         </DialogTrigger>
       )}
-      <DialogContent className="bg-surface">
-        <DialogHeader className="text-lg">{title}</DialogHeader>
+      <DialogContent data-testid="tx-dialog" className="bg-surface">
+        <DialogHeader data-testid="tx-dialog-title" className="text-lg">
+          {title}
+        </DialogHeader>
 
         <Component error={error} hash={props.hash} chainId={props.chainId} />
 
         <DialogFooter className="flex">
           {showFooter && (
             <Button
+              data-testid="tx-dialog-confirm-button"
               disabled={props.disabled}
               size="md"
               type="submit"

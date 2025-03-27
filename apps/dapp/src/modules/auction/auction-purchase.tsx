@@ -113,6 +113,10 @@ export function AuctionPurchase({ auction, ...props }: AuctionPurchaseProps) {
   const form = useForm<BidForm>({
     mode: "onChange",
     delayError: 600,
+    defaultValues: {
+      quoteTokenAmount: "0",
+      baseTokenAmount: "0",
+    },
     resolver: zodResolver(
       schema
         .refine(
@@ -297,7 +301,7 @@ export function AuctionPurchase({ auction, ...props }: AuctionPurchaseProps) {
 
   // TODO display "waiting" in modal when the tx is waiting to be signed by the user
   return (
-    <div className="mx-auto lg:min-w-[477px]">
+    <div data-testid="auction-bid-card" className="mx-auto lg:min-w-[477px]">
       {canBid ? (
         <FormProvider {...form}>
           <form onSubmit={(e) => e.preventDefault()}>
@@ -392,6 +396,7 @@ export function AuctionPurchase({ auction, ...props }: AuctionPurchaseProps) {
                 <div className="mt-4 w-full">
                   <Button
                     className="w-full"
+                    data-testid="bid-submit-button"
                     disabled={
                       isWaiting ||
                       isSigningApproval ||

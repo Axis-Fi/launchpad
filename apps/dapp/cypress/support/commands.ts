@@ -23,7 +23,7 @@ Cypress.Commands.add("deployToken", (symbol: string, name: string) => {
   cy.get(DEPLOY.TOKEN_NAME_FIELD).clear().type(name);
   cy.get(DEPLOY.TOKEN_SYMBOL_FIELD).clear().type(symbol);
   cy.get(DEPLOY.DEPLOY_BUTTON).click();
-  cy.get(DEPLOY.SUCCESS_MESSAGE, { timeout: TIME.TRANSACTION_TIMEOUT }).should(
+  cy.get(DEPLOY.SUCCESS_MESSAGE, { timeout: TIME.TXN_TIMEOUT }).should(
     "be.visible",
   );
 
@@ -32,6 +32,22 @@ Cypress.Commands.add("deployToken", (symbol: string, name: string) => {
     .invoke("attr", "data-token-address")
     .then((tokenAddress) => tokenAddress);
 });
+
+Cypress.Commands.add(
+  "mintToken",
+  (address: string, amount: string = "100000") => {
+    const { MINT } = QUERIES;
+
+    cy.visit(URLS.DEPLOY);
+
+    cy.get(MINT.ADDRESS_FIELD).clear().type(address);
+    cy.get(MINT.AMOUNT_FIELD).clear().type(amount);
+    cy.get(MINT.MINT_BUTTON).click();
+    cy.get(MINT.SUCCESS_MESSAGE, { timeout: TIME.TXN_TIMEOUT }).should(
+      "be.visible",
+    );
+  },
+);
 
 Cypress.Commands.add(
   "deployTokenAndMint",
@@ -43,12 +59,12 @@ Cypress.Commands.add(
     cy.get(DEPLOY.TOKEN_SYMBOL_FIELD).clear().type(symbol);
     cy.get(DEPLOY.DEPLOY_BUTTON).click();
     cy.get(DEPLOY.SUCCESS_MESSAGE, {
-      timeout: TIME.TRANSACTION_TIMEOUT,
+      timeout: TIME.TXN_TIMEOUT,
     }).should("be.visible");
 
     cy.get(MINT.AMOUNT_FIELD).clear().type(amount);
     cy.get(MINT.MINT_BUTTON).click();
-    cy.get(MINT.SUCCESS_MESSAGE, { timeout: TIME.TRANSACTION_TIMEOUT }).should(
+    cy.get(MINT.SUCCESS_MESSAGE, { timeout: TIME.TXN_TIMEOUT }).should(
       "be.visible",
     );
 

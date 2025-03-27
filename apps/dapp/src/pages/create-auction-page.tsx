@@ -1554,6 +1554,7 @@ export default function CreateAuctionPage() {
     form.setValue(
       "payoutTokenBalance",
       formatUnits(payoutTokenBalance ?? BigInt(0), payoutTokenDecimals ?? 0),
+      { shouldValidate: true },
     );
   }, [payoutTokenBalance, payoutTokenDecimals]);
 
@@ -1668,10 +1669,6 @@ export default function CreateAuctionPage() {
 
     navigator.clipboard.writeText(urlWithData);
   };
-
-  useEffect(() => {
-    console.log("fees.maxReferrerFee", fees.maxReferrerFee, fees);
-  }, [fees.maxReferrerFee]);
 
   return (
     <PageContainer id="__AXIS_CREATE_LAUNCH_PAGE__" key={resetKey.toString()}>
