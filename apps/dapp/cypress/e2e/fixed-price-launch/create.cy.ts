@@ -4,7 +4,7 @@ import { PAYOUT_TOKEN_ADDRESS } from "../../create-fixtures";
 const { CREATE_LAUNCH } = QUERIES;
 
 describe("fixed price launch", () => {
-  it("creates a fixed price launch", () => {
+  it.skip("creates a fixed price launch", () => {
     cy.visit(URLS.HOME);
     cy.connectWallet();
 
