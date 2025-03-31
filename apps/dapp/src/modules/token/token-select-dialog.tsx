@@ -9,7 +9,6 @@ import {
   DialogStatusChangeHandler,
   DialogTitle,
   IconedLabel,
-  ScrollArea,
   Tooltip,
   trimAddress,
 } from "@repo/ui";
@@ -18,7 +17,6 @@ import { TokenListManager } from "./token-list-manager";
 import { ArrowLeftIcon } from "lucide-react";
 import { useTokenLists } from "state/tokenlist";
 import isDeepEqual from "node_modules/@repo/ui/src/helpers/is-deep-equal";
-import { useDeployedTokens } from "state/deployedTokens";
 import { Link } from "react-router-dom";
 
 type TokenSelectDialogProps = {
@@ -35,7 +33,6 @@ export function TokenSelectDialog({
   onChange,
   setDialogOpen,
 }: TokenSelectDialogProps) {
-  const deployedTokens = useDeployedTokens();
   const { getTokensByChainId } = useTokenLists();
   const [token, setToken] = React.useState<Token>();
   const [view, setView] = React.useState<"manage" | "default">("default");
@@ -68,19 +65,10 @@ export function TokenSelectDialog({
             <DialogTitle>Select Token</DialogTitle>
           </DialogHeader>
           <div>
-            <ScrollArea className="max-h-[300px]">
+            <div className="max-h-[300px] overflow-scroll">
               {tokens
-                .map((t) => ({ ...t, isCustom: false }))
+                .map((t) => ({ ...t }))
                 .sort((a, b) => a.name.localeCompare(b.name))
-                .concat(
-                  deployedTokens.data
-                    ?.map((data) => ({
-                      ...data,
-                      isCustom: true,
-                    }))
-                    .sort((a, b) => a.name.localeCompare(b.name)) ?? [],
-                )
-
                 .map((t, i) => (
                   <Button
                     key={i}
@@ -99,7 +87,7 @@ export function TokenSelectDialog({
                     <TokenSelectRow token={t} />
                   </Button>
                 ))}
-            </ScrollArea>
+            </div>
           </div>
         </>
       )}
@@ -122,7 +110,7 @@ export function TokenSelectDialog({
 
       <DialogFooter>
         {view === "default" && (
-          <>
+          <div className="flex justify-end gap-x-5">
             <Button
               onClick={(e) => {
                 e.preventDefault();
@@ -134,7 +122,7 @@ export function TokenSelectDialog({
             <Button asChild>
               <Link to="/deploy">Add token</Link>
             </Button>
-          </>
+          </div>
         )}
       </DialogFooter>
     </DialogContent>
