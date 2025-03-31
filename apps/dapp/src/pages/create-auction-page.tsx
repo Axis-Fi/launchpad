@@ -174,7 +174,10 @@ const schema = z
       .or(z.literal("")),
     vestingDuration: StringNumberNotNegative.optional(),
     vestingStart: z.date().optional(),
-    referrerFee: z.array(z.number()).optional(),
+    referrerFee: z
+      .number()
+      .optional()
+      .or(z.array(z.number()).transform((v) => v[0])),
     // Metadata
     name: z.string().max(32),
     description: z.string().max(332),
@@ -190,15 +193,6 @@ const schema = z
     message: "Vesting duration is required",
     path: ["vestingDuration"],
   })
-
-  // TODO do we need to add a max vesting duration check?
-  // .refine(
-  //   (data) => (!data.isVested ? true : data.vestingDuration && Number(data.vestingDuration) <= 270),
-  //   {
-  //     message: "Max vesting duration is 270 days",
-  //     path: ["vestingStart"],
-  //   },
-  // )
   .refine((data) => (!data.isVested ? true : data.vestingStart), {
     message: "Vesting start is required",
     path: ["vestingStart"],
@@ -218,13 +212,6 @@ const schema = z
     message: "Start date needs to be in the future",
     path: ["start"],
   })
-  .refine(
-    (data) => addDays(data.start, 1).getTime() < data.deadline.getTime(),
-    {
-      message: "Deadline needs to be at least 1 day after the start",
-      path: ["deadline"],
-    },
-  )
   .refine(
     (data) =>
       // Only required for EMP
@@ -622,6 +609,7 @@ export default function CreateAuctionPage() {
     baselineFloorRangeGap: "0",
     baselineAnchorTickU: "0",
     baselineAnchorTickWidth: "10",
+    referrerFee: 0,
   };
 
   const { address, chain } = useAccount();
@@ -638,11 +626,21 @@ export default function CreateAuctionPage() {
     defaultValues: storedConfig ?? auctionDefaultValues,
   });
 
+  const updateForm = React.useCallback(
+    (data: Partial<CreateAuctionForm>) => {
+      const formatted = formatDates(clearNullishFields(data));
+      Object.entries(formatted).forEach(([key, value]) =>
+        form.setValue(key as keyof CreateAuctionForm, value),
+      );
+    },
+    [form],
+  );
+
   React.useEffect(() => {
     if (storedConfig) {
       updateForm(storedConfig);
     }
-  }, [storedConfig]);
+  }, [storedConfig, updateForm]);
 
   React.useEffect(() => {
     const params = new URLSearchParams(location.hash.split("?")[1]);
@@ -655,14 +653,7 @@ export default function CreateAuctionPage() {
         console.error("Invalid JSON in query params:", error);
       }
     }
-  }, [location.search]);
-
-  function updateForm(data: Partial<CreateAuctionForm>) {
-    const formatted = formatDates(clearNullishFields(data));
-    Object.entries(formatted).forEach(([key, value]) =>
-      form.setValue(key as keyof CreateAuctionForm, value),
-    );
-  }
+  }, [updateForm]);
 
   const watchedValues = form.watch([
     "isVested",
@@ -1017,7 +1008,7 @@ export default function CreateAuctionPage() {
                   }),
             wrapDerivative: false,
             callbackData: callbackData,
-            referrerFee: toBasisPoints(values.referrerFee?.[0] ?? 0),
+            referrerFee: toBasisPoints(values.referrerFee ?? 0),
           },
           {
             start: getTimestamp(values.start),
@@ -1382,7 +1373,7 @@ export default function CreateAuctionPage() {
       console.log("Clearing errors for Baseline Auction House");
       form.clearErrors("callbacks");
     }
-  }, [baselineAuctionHouse, auctionHouseAddress, isBaselineQueryEnabled]);
+  }, [baselineAuctionHouse, auctionHouseAddress, isBaselineQueryEnabled, form]);
 
   // Check here if the payout token is the same as the one in the baseline callbacks
   const { data: baselineBaseToken } = useReadContract({
@@ -1555,7 +1546,7 @@ export default function CreateAuctionPage() {
       "payoutTokenBalance",
       formatUnits(payoutTokenBalance ?? BigInt(0), payoutTokenDecimals ?? 0),
     );
-  }, [payoutTokenBalance, payoutTokenDecimals]);
+  }, [form, payoutTokenBalance, payoutTokenDecimals]);
 
   const payoutTokenBalanceDecimal: number =
     payoutTokenBalance && payoutTokenDecimals
@@ -1668,10 +1659,6 @@ export default function CreateAuctionPage() {
 
     navigator.clipboard.writeText(urlWithData);
   };
-
-  useEffect(() => {
-    console.log("fees.maxReferrerFee", fees.maxReferrerFee, fees);
-  }, [fees.maxReferrerFee]);
 
   return (
     <PageContainer id="__AXIS_CREATE_LAUNCH_PAGE__" key={resetKey.toString()}>
@@ -2046,40 +2033,6 @@ export default function CreateAuctionPage() {
                         </FormItemWrapper>
                       )}
                     />
-
-                    {/* Disabled for now*/}
-                    {/* <FormField
-                      control={form.control}
-                      name="minBidPercent"
-                      render={({ field }) => (
-                        <FormItemWrapper
-                          label="Minimum Bid Size / Capacity"
-                          tooltip="Each bid will need to be greater than or equal to this percentage of the capacity"
-                        >
-                          <>
-                            <Input
-                              disabled
-                              className="disabled:opacity-100"
-                              value={`${
-                                field.value?.[0] ??
-                                auctionDefaultValues.minBidPercent
-                              }%`}
-                            />
-                            <Slider
-                              {...field}
-                              className="cursor-pointer pt-2"
-                              min={1}
-                              max={100}
-                              defaultValue={auctionDefaultValues.minBidPercent}
-                              value={field.value}
-                              onValueChange={(v) => {
-                                field.onChange(v);
-                              }}
-                            />
-                          </>
-                        </FormItemWrapper>
-                      )}
-                    /> */}
                   </>
                 )}
                 {auctionType === AuctionType.FIXED_PRICE_BATCH && (
@@ -2159,14 +2112,11 @@ export default function CreateAuctionPage() {
                       <DatePicker
                         time
                         data-testid="create-launch-deadline"
-                        placeholderDate={addDays(addHours(new Date(), 1), 7)}
+                        placeholderDate={addHours(new Date(), 1)}
                         content={formatDate.fullLocal(
                           addDays(start ? (start as Date) : new Date(), 7),
                         )}
-                        minDate={addDays(
-                          start ? (start as Date) : new Date(),
-                          1,
-                        )}
+                        minDate={start ? (start as Date) : new Date()}
                         {...field}
                       />
                     </FormItemWrapper>

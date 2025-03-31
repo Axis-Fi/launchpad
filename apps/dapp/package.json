@@ -35,7 +35,7 @@
     "@axis-finance/auto-signer-provider": "^0.0.1",
     "@axis-finance/cloak": "0.0.14",
     "@axis-finance/curator-api": "0.0.25",
-    "@axis-finance/deployments": "0.0.10",
+    "@axis-finance/deployments": "0.0.12",
     "@axis-finance/env": "0.0.14",
     "@axis-finance/sdk": "0.0.36",
     "@axis-finance/subgraph-client": "0.0.11",
@@ -69,10 +69,10 @@
     "react-scroll": "^1.9.0",
     "react-use-wizard": "^2.3.0",
     "recharts": "^2.12.0",
-    "viem": "^2.17.3",
+    "viem": "2.24.2",
     "vite-plugin-node-polyfills": "^0.17.0",
     "vite-tsconfig-paths": "^4.3.1",
-    "wagmi": "^2.5.2"
+    "wagmi": "2.14.15"
   },
   "devDependencies": {
     "@axis-finance/eslint-config": "0.0.2",
