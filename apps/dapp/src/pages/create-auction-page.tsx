@@ -166,7 +166,6 @@ const schema = z
       .regex(/^(0x)?[0-9a-fA-F]$/)
       .optional(),
     isVested: z.boolean().optional(),
-
     curator: z
       .string()
       .regex(/^(0x)?[0-9a-fA-F]{40}$/)
@@ -709,7 +708,7 @@ export default function CreateAuctionPage() {
       chainId,
     });
 
-  const { data: fees } = useFees(
+  const { data: fees, error: feesError } = useFees(
     connectedChainId,
     auctionHouseAddress,
     auctionType,
@@ -2155,13 +2154,17 @@ export default function CreateAuctionPage() {
                   />{" "}
                   <FormField
                     name="referrerFee"
+                    disabled={!!feesError}
                     render={({ field }) => (
                       <FormItemWrapper
-                        label="Referrer Fee Percentage"
+                        label={`Referrer Fee Percentage (max: ${fees.maxReferrerFee}%)`}
                         tooltip={
                           "The percentage amount of referrer fee you're willing to pay"
                         }
                       >
+                        <div className="text-destructive empty:hidden">
+                          {feesError?.message}
+                        </div>
                         <PercentageSlider
                           field={field}
                           min={0}

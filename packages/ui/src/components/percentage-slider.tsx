@@ -42,6 +42,7 @@ export function PercentageSlider<
         onValueChange={(v) => {
           field.onChange(v);
         }}
+        disabled={field.disabled}
       />
     </div>
   );
