@@ -23,6 +23,7 @@ const CHAIN_NAME_MAP = {
   mode: "mode-mainnet",
   "mantle-sepolia": "mantle-sepolia-testnet",
   "blast-mainnet": "blast",
+  mainnet: "ethereum",
 } as const;
 
 export function getChainId(chainName?: string): number {
