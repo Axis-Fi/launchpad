@@ -1,5 +1,10 @@
 import {
   Button,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogRoot,
+  DialogTitle,
   FormField,
   FormItemWrapper,
   Input,
@@ -14,7 +19,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { BlockExplorerLink } from "components/blockexplorer-link";
 import { useChainId } from "wagmi";
 import useERC20 from "loaders/use-erc20";
-import React from "react";
+import React, { useCallback, useState } from "react";
 import { useMintToken } from "modules/token/use-mint-token";
 import type { Token } from "@axis-finance/types";
 import { Address, isAddress } from "viem";
@@ -31,6 +36,7 @@ const schema = z.object({
 export type TokenConfig = z.infer<typeof schema>;
 
 export function DeployTokenPage() {
+  const [dialogToggle, setDialogToggle] = useState(false);
   const deployedTokens = useDeployedTokens();
   const copy = useClipboard();
   const chainId = useChainId();
@@ -41,6 +47,43 @@ export function DeployTokenPage() {
       decimals: 6,
     },
     resolver: zodResolver(schema),
+  });
+
+  const addTokenForm = useForm<Token>({
+    resolver: zodResolver(
+      z
+        .object({
+          name: z.string(),
+          symbol: z.string(),
+          decimals: z.number().or(z.string().transform((v) => Number(v))),
+          address: z.string(),
+          chainId: z.number().or(z.string().transform((v) => Number(v))),
+          mintable: z.boolean().default(true),
+          logoURI: z.string(),
+        })
+        .refine(
+          (data) =>
+            deployedTokens.data?.find((t) => t.address === data.address) ===
+            undefined,
+          {
+            message: "Token already exists",
+            path: ["address"],
+          },
+        )
+        .refine(
+          (data) =>
+            deployedTokens.data?.find((t) => t.name === data.name) ===
+            undefined,
+          {
+            message: "Token already exists",
+            path: ["name"],
+          },
+        )
+        .refine((data) => isAddress(data.address), {
+          message: "Invalid address",
+          path: ["address"],
+        }),
+    ),
   });
 
   const [amount, setAmount] = React.useState("10000");
@@ -55,13 +98,131 @@ export function DeployTokenPage() {
 
   const disabled = deploy.receipt.isLoading || !mint.mintCall.isSuccess;
 
+  const onAdd = useCallback(
+    (token: Token) => {
+      deployedTokens.add(token);
+      setDialogToggle(false);
+    },
+    [deployedTokens],
+  );
+
+  const close = useCallback(() => {
+    setDialogToggle(false);
+  }, []);
+
   return (
     <PageContainer id="__AXIS_DEPLOY_PAGE__">
       <div className="container">
         <h1 className="mb-8">Token Utilities</h1>
+        <div className="mb-5 flex items-center gap-5">
+          <h4>Previously Deployed</h4>
+          <Button className="h-8 w-fit" onClick={() => setDialogToggle(true)}>
+            Add
+          </Button>
+          <DialogRoot
+            open={dialogToggle}
+            onOpenChange={(value) => {
+              setDialogToggle(value);
+              if (!value) {
+                addTokenForm.reset();
+              }
+            }}
+          >
+            <DialogContent className="bg-surface">
+              <DialogHeader>
+                <DialogTitle>Add Existing Token</DialogTitle>
+              </DialogHeader>
+
+              <FormProvider {...addTokenForm}>
+                <form onSubmit={addTokenForm.handleSubmit(onAdd)}>
+                  <div className="w-[450px] py-5">
+                    <p className="text-red-500 empty:hidden">
+                      {Object.values(addTokenForm.formState.errors)[0]?.message}
+                    </p>
+                    <FormField
+                      control={addTokenForm.control}
+                      name="address"
+                      render={({ field }) => (
+                        <FormItemWrapper label="Token Address">
+                          <Input
+                            autoComplete="off"
+                            placeholder="0xdeadbeef..."
+                            data-testid="add-token-address"
+                            {...field}
+                          />
+                        </FormItemWrapper>
+                      )}
+                    />
+                    <FormField
+                      control={addTokenForm.control}
+                      name="name"
+                      render={({ field }) => (
+                        <FormItemWrapper label="Token Name">
+                          <Input data-testid="add-token-name" {...field} />
+                        </FormItemWrapper>
+                      )}
+                    />
+                    <FormField
+                      control={addTokenForm.control}
+                      name="symbol"
+                      render={({ field }) => (
+                        <FormItemWrapper label="Symbol">
+                          <Input data-testid="add-token-symbol" {...field} />
+                        </FormItemWrapper>
+                      )}
+                    />
+                    <FormField
+                      control={addTokenForm.control}
+                      name="decimals"
+                      render={({ field }) => (
+                        <FormItemWrapper label="Decimals">
+                          <Input data-testid="add-token-decimals" {...field} />
+                        </FormItemWrapper>
+                      )}
+                    />
+                    <FormField
+                      control={addTokenForm.control}
+                      name="chainId"
+                      render={({ field }) => (
+                        <FormItemWrapper label="Chain ID">
+                          <Input data-testid="add-token-chain-id" {...field} />
+                        </FormItemWrapper>
+                      )}
+                    />
+                    <FormField
+                      control={addTokenForm.control}
+                      name="logoURI"
+                      render={({ field }) => (
+                        <FormItemWrapper label="Logo URI">
+                          <Input data-testid="add-token-logo-uri" {...field} />
+                        </FormItemWrapper>
+                      )}
+                    />
+                  </div>
+                  <DialogFooter>
+                    <Button
+                      type="button"
+                      size="md"
+                      variant="secondary"
+                      onClick={() => close()}
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      data-testid="add-existing-token-button"
+                      type="submit"
+                      size="md"
+                    >
+                      Add
+                    </Button>
+                  </DialogFooter>
+                </form>
+              </FormProvider>
+            </DialogContent>
+          </DialogRoot>
+        </div>
         {deployedTokens.data && deployedTokens.data.length > 0 && (
           <>
-            <h4 className="mb-5">Previously Deployed</h4>
             <ScrollArea className="max-h-80">
               {deployedTokens.data.map((t) => (
                 <div

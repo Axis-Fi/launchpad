@@ -15,11 +15,7 @@ export const useDeployedTokens = () => {
 
   const add = useCallback(
     (token: Token) => {
-      set((prev) => {
-        const tokens = [...(prev ?? []), token];
-
-        return tokens;
-      });
+      set((prev) => [...(prev ?? []), token]);
     },
     [set],
   );
