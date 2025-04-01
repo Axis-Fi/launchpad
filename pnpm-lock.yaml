@@ -42,8 +42,8 @@ importers:
         specifier: 0.0.18
         version: 0.0.18(viem@2.17.3)
       "@axis-finance/curator-api":
-        specifier: 0.0.29
-        version: 0.0.29(@tanstack/react-query@5.18.1)(postcss@8.5.3)(react@18.3.1)(typescript@5.2.2)(wagmi@2.5.2)
+        specifier: 0.0.30
+        version: 0.0.30(@tanstack/react-query@5.18.1)(postcss@8.5.3)(react@18.3.1)(typescript@5.2.2)(wagmi@2.5.2)
       "@axis-finance/deployments":
         specifier: 0.0.14
         version: 0.0.14
@@ -536,10 +536,10 @@ packages:
       - viem
     dev: false
 
-  /@axis-finance/curator-api@0.0.29(@tanstack/react-query@5.18.1)(postcss@8.5.3)(react@18.3.1)(typescript@5.2.2)(wagmi@2.5.2):
+  /@axis-finance/curator-api@0.0.30(@tanstack/react-query@5.18.1)(postcss@8.5.3)(react@18.3.1)(typescript@5.2.2)(wagmi@2.5.2):
     resolution:
       {
-        integrity: sha512-clA/FkZpsvHUxBD+nKXBELOc0ege7QOZLlq+Z01moqfI4Qy57Pf6B5YLI1DaU5akV+9DWLUwyt0lTJ5z5VHkmw==,
+        integrity: sha512-iDiocYemc5F5Jzhhkg2WXhlhOyaT1wAgUJ+nHlfjzX/YJAVnx4xtNpVcnsCSlYoWjRcklgNbmw8fJt8Oye102Q==,
       }
     dependencies:
       "@axis-finance/sdk": 0.0.40(@tanstack/react-query@5.18.1)(@trpc/server@10.45.2)(postcss@8.5.3)(react@18.3.1)(typescript@5.2.2)(viem@2.17.3)(wagmi@2.5.2)(zod@3.24.2)
