@@ -25,7 +25,7 @@ import { ClipboardIcon, X } from "lucide-react";
 const schema = z.object({
   name: z.string(),
   symbol: z.string(),
-  decimals: z.number(),
+  decimals: z.number().or(z.string().transform((v) => Number(v))),
 });
 
 export type TokenConfig = z.infer<typeof schema>;
