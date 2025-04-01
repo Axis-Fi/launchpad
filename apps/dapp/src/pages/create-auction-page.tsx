@@ -106,7 +106,6 @@ import type { Token } from "@axis-finance/types";
 import { DownloadIcon, ShareIcon, TrashIcon } from "lucide-react";
 import { TriggerMessage } from "components/trigger-message";
 import { getTickAtPrice } from "utils/uniswapV3";
-import { environment } from "utils/environment";
 
 const optionalURL = z.union([z.string().url().optional(), z.literal("")]);
 
@@ -213,9 +212,7 @@ const schema = z
     path: ["start"],
   })
   .refine(
-    (data) =>
-      environment.isProduction &&
-      addDays(data.start, 1).getTime() < data.deadline.getTime(),
+    (data) => addDays(data.start, 1).getTime() < data.deadline.getTime(),
     {
       message: "Deadline needs to be at least 1 day after the start",
       path: ["deadline"],
