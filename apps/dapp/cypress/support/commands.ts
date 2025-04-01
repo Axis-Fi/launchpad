@@ -1,5 +1,5 @@
 /// <reference types="cypress" />
-import { URLS, COMPONENTS, TIME } from "../constants";
+import { URLS, QUERIES, TIME } from "../constants";
 
 Cypress.Commands.add("shouldNotRenderErrorPage", () => {
   // Timeout required because the error page might not appear until the whole page has rendered
@@ -17,7 +17,7 @@ Cypress.Commands.add("connectWallet", () => {
 });
 
 Cypress.Commands.add("deployToken", (symbol: string, name: string) => {
-  const { DEPLOY } = COMPONENTS;
+  const { DEPLOY } = QUERIES;
 
   cy.visit(URLS.DEPLOY);
   cy.get(DEPLOY.TOKEN_NAME_FIELD).clear().type(name);
@@ -28,7 +28,7 @@ Cypress.Commands.add("deployToken", (symbol: string, name: string) => {
   );
 
   return cy
-    .get(COMPONENTS.BLOCK_EXPLORER_LINK)
+    .get(QUERIES.BLOCK_EXPLORER_LINK)
     .invoke("attr", "data-token-address")
     .then((tokenAddress) => tokenAddress);
 });
@@ -36,7 +36,7 @@ Cypress.Commands.add("deployToken", (symbol: string, name: string) => {
 Cypress.Commands.add(
   "deployTokenAndMint",
   (symbol: string, name: string, amount: string = "100000") => {
-    const { DEPLOY, MINT } = COMPONENTS;
+    const { DEPLOY, MINT } = QUERIES;
 
     cy.visit(URLS.DEPLOY);
     cy.get(DEPLOY.TOKEN_NAME_FIELD).clear().type(name);
@@ -53,7 +53,7 @@ Cypress.Commands.add(
     );
 
     return cy
-      .get(COMPONENTS.BLOCK_EXPLORER_LINK)
+      .get(QUERIES.BLOCK_EXPLORER_LINK)
       .invoke("attr", "data-token-address")
       .then((tokenAddress) => tokenAddress);
   },

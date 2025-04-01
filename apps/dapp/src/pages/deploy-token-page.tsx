@@ -141,7 +141,7 @@ export function DeployTokenPage() {
         <div className="text-right">
           <h4>Mint Status</h4>
           {mint.mintTx.isSuccess && (
-            <p data-testid="mint-success-message">
+            <p>
               View transaction on&nbsp;
               <BlockExplorerLink
                 showName
@@ -152,7 +152,9 @@ export function DeployTokenPage() {
           )}
           {mint.mintTx.isPending && <p>Waiting for signature...</p>}
           {mint.mintReceipt.isLoading && <p>Waiting for confirmation...</p>}
-          {mint.mintReceipt.isSuccess && <p>Success</p>}
+          {mint.mintReceipt.isSuccess && (
+            <p data-testid="mint-success-message">Success</p>
+          )}
         </div>
       </div>
     </PageContainer>

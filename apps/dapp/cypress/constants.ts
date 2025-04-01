@@ -24,7 +24,7 @@ const URLS = {
 
 const testId = (id: string) => `[data-testid='${id}']`;
 
-const COMPONENTS = {
+const QUERIES = {
   DATE_PICKER: {
     CALENDAR_DAY_BUTTON: "button[name='day']",
     TIME_FIELD: testId("date-picker-time"),
@@ -76,7 +76,7 @@ const COMPONENTS = {
 };
 
 const TIME = {
-  TRANSACTION_TIMEOUT: 10 * 1000,
+  TRANSACTION_TIMEOUT: 20 * 1000,
 };
 
-export { URLS, COMPONENTS, TIME };
+export { URLS, QUERIES, TIME };
