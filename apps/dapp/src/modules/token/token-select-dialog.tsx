@@ -1,6 +1,7 @@
 import { Token } from "@axis-finance/types";
 import {
   Button,
+  cn,
   DialogContent,
   DialogFooter,
   DialogHeader,
@@ -8,15 +9,15 @@ import {
   DialogStatusChangeHandler,
   DialogTitle,
   IconedLabel,
-  ScrollArea,
   Tooltip,
   trimAddress,
 } from "@repo/ui";
-import React from "react";
+import React, { useCallback } from "react";
 import { TokenListManager } from "./token-list-manager";
 import { ArrowLeftIcon } from "lucide-react";
 import { useTokenLists } from "state/tokenlist";
 import isDeepEqual from "node_modules/@repo/ui/src/helpers/is-deep-equal";
+import { Link } from "react-router-dom";
 
 type TokenSelectDialogProps = {
   chainId: number;
@@ -26,35 +27,75 @@ type TokenSelectDialogProps = {
 };
 
 /** Shows a list of tokens per chain and a way to manage tokenlists*/
-export function TokenSelectDialog(props: TokenSelectDialogProps) {
+export function TokenSelectDialog({
+  value,
+  chainId,
+  onChange,
+  setDialogOpen,
+}: TokenSelectDialogProps) {
   const { getTokensByChainId } = useTokenLists();
   const [token, setToken] = React.useState<Token>();
-  const [isManaging, setIsManaging] = React.useState(false);
+  const [view, setView] = React.useState<"manage" | "default">("default");
 
-  const tokens = getTokensByChainId(props.chainId);
+  const tokens = getTokensByChainId(chainId);
 
-  const handleSelect = (value: Token) => {
-    setToken(value);
-    props.onChange?.(value, {
-      imgURL: value.logoURI,
-      label: value.symbol,
-      value: value.symbol,
-    });
-  };
+  const handleSelect = useCallback(
+    (value: Token) => {
+      setToken(value);
+      onChange?.(value, {
+        imgURL: value.logoURI,
+        label: value.symbol,
+        value: value.symbol,
+      });
+    },
+    [onChange],
+  );
 
   React.useEffect(() => {
-    if (props.value && !isDeepEqual(props.value, token)) {
-      handleSelect(props.value);
+    if (value && !isDeepEqual(value, token)) {
+      handleSelect(value);
     }
-  }, [props.value]);
+  }, [handleSelect, value, token]);
 
   return (
-    <>
-      {isManaging ? (
-        <DialogContent className="bg-surface max-w-sm">
+    <DialogContent className="bg-surface max-w-lg">
+      {view === "default" && (
+        <>
+          <DialogHeader>
+            <DialogTitle>Select Token</DialogTitle>
+          </DialogHeader>
+          <div>
+            <div className="max-h-[300px] overflow-scroll">
+              {tokens
+                .map((t) => ({ ...t }))
+                .sort((a, b) => a.name.localeCompare(b.name))
+                .map((t, i) => (
+                  <Button
+                    key={i}
+                    data-testid={`token-select-dialog-token-${t.symbol}`}
+                    variant="secondary"
+                    size="lg"
+                    className={cn(
+                      t.isCustom && "bg-surface",
+                      "block w-full rounded-none border-x border-b-0 border-t px-2 first:rounded-t-sm last:rounded-b-sm last:border-b",
+                    )}
+                    onClick={() => {
+                      handleSelect(t);
+                      setDialogOpen?.(false);
+                    }}
+                  >
+                    <TokenSelectRow token={t} />
+                  </Button>
+                ))}
+            </div>
+          </div>
+        </>
+      )}
+      {view === "manage" && (
+        <>
           <DialogHeader className="flex-row items-center gap-x-2">
             <Button
-              onClick={() => setIsManaging(false)}
+              onClick={() => setView("default")}
               size="icon"
               variant="ghost"
               className="size-6"
@@ -64,51 +105,32 @@ export function TokenSelectDialog(props: TokenSelectDialogProps) {
             <DialogTitle>Manage Tokenlists</DialogTitle>
           </DialogHeader>
           <TokenListManager />
-        </DialogContent>
-      ) : (
-        <DialogContent className="bg-surface max-w-sm">
-          <DialogHeader>
-            <DialogTitle>Select Token</DialogTitle>
-          </DialogHeader>
-          <div>
-            <ScrollArea className="max-h-[300px]">
-              {tokens
-                .sort((a, b) => a.name.localeCompare(b.name))
-                .map((t, i) => (
-                  <Button
-                    key={i}
-                    data-testid={`token-select-dialog-token-${t.symbol}`}
-                    variant="secondary"
-                    size="lg"
-                    className="block w-full rounded-none border-x border-b-0 border-t px-2 first:rounded-t-sm last:rounded-b-sm last:border-b"
-                    onClick={() => {
-                      handleSelect(t);
-                      props.setDialogOpen?.(false);
-                    }}
-                  >
-                    <TokenSelectRow token={t} />
-                  </Button>
-                ))}
-            </ScrollArea>
-          </div>
-          <DialogFooter>
+        </>
+      )}
+
+      <DialogFooter>
+        {view === "default" && (
+          <div className="flex justify-end gap-x-5">
             <Button
               onClick={(e) => {
                 e.preventDefault();
-                setIsManaging(true);
+                setView("manage");
               }}
             >
               Manage Tokenlists
             </Button>
-          </DialogFooter>
-        </DialogContent>
-      )}
-    </>
+            <Button asChild>
+              <Link to="/deploy">Add token</Link>
+            </Button>
+          </div>
+        )}
+      </DialogFooter>
+    </DialogContent>
   );
 }
 
 /** Displays token symbol, logo and contract address*/
-function TokenSelectRow({ token }: { token: Token }) {
+function TokenSelectRow({ token }: { token: Token & { isCustom: boolean } }) {
   const isLongSymbol = token.symbol.length > 7;
   const label = isLongSymbol
     ? `${token.symbol.substring(0, 6)}...`
@@ -116,7 +138,10 @@ function TokenSelectRow({ token }: { token: Token }) {
   return (
     <div className="flex items-center justify-between gap-x-2 p-1 ">
       <Tooltip content={isLongSymbol && token.symbol}>
-        <IconedLabel src={token.logoURI} label={label} />
+        <span className="flex items-center gap-3">
+          <IconedLabel src={token.logoURI} label={label} />
+          {token.isCustom && <span className="text-orange-400">Custom</span>}
+        </span>
         <p className="text-xs">{trimAddress(token.address, 8)}</p>
       </Tooltip>
     </div>
