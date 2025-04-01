@@ -31,7 +31,7 @@ export function PercentageSlider<
       <Input
         disabled
         className={cn("w-16 disabled:opacity-100", props.inputClassName)}
-        value={`${field.value?.[0] ?? defaultValue}%`}
+        value={`${field.value?.[0] ?? defaultValue ?? 0}%`}
       />
       <Slider
         className={cn("cursor-pointer", props.sliderClassName)}
@@ -42,6 +42,7 @@ export function PercentageSlider<
         onValueChange={(v) => {
           field.onChange(v);
         }}
+        disabled={field.disabled}
       />
     </div>
   );

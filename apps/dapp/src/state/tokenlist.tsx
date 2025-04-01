@@ -1,37 +1,80 @@
-import { atom, useAtom } from "jotai";
+import { atom, useAtomValue, useSetAtom } from "jotai";
 import { TokenList } from "@axis-finance/types";
 import { defaultTokenlist } from "@axis-finance/deployments";
+import { deployedTokensAtom } from "./deployedTokens";
+import { useCallback } from "react";
 
-export const tokenlistAtom = atom<TokenList[]>([defaultTokenlist]);
+const customTokenListActiveAtom = atom(true);
+const tokenListsAtom = atom<TokenList[]>([defaultTokenlist]);
+
+export const finalTokenList = atom<TokenList[]>((get) => {
+  const deployedTokens = get(deployedTokensAtom) ?? [];
+  const tokenLists = get(tokenListsAtom);
+  const customIsActive = get(customTokenListActiveAtom);
+  const customList: TokenList = {
+    name: "Custom",
+    tokens: deployedTokens,
+    isActive: customIsActive,
+    timestamp: new Date().toISOString(),
+    version: { major: 1, minor: 0, patch: 0 },
+  };
+  return [...(deployedTokens.length > 0 ? [customList] : []), ...tokenLists];
+});
 
 export const useTokenLists = () => {
-  const [lists, setActiveLists] = useAtom(tokenlistAtom);
+  const setActiveLists = useSetAtom(tokenListsAtom);
+  const setCustomActive = useSetAtom(customTokenListActiveAtom);
+  const lists = useAtomValue(finalTokenList);
 
-  const addList = (list: TokenList) => {
-    if (!lists.some((l) => l.name === list.name)) {
-      setActiveLists((prev) => [...prev, list]);
-    }
-  };
+  const removeList = useCallback(
+    (list: TokenList) => {
+      setActiveLists((prev) => prev.filter((l) => l.name !== list.name));
+    },
+    [setActiveLists],
+  );
 
-  const removeList = (list: TokenList) => {
-    setActiveLists((prev) => prev.filter((l) => l.name !== list.name));
-  };
+  const toggleList = useCallback(
+    (list: TokenList, active: boolean) => {
+      if (list.name === "Custom") {
+        setCustomActive(active);
+      } else {
+        setActiveLists((prev) =>
+          prev.map((l) => {
+            if (l.name === list.name) {
+              l.isActive = active;
+            }
+            return l;
+          }),
+        );
+      }
+    },
+    [setActiveLists, setCustomActive],
+  );
 
-  const toggleList = (list: TokenList, active: boolean) => {
-    setActiveLists((prev) =>
-      prev.map((l) => {
-        if (l.name === list.name) {
-          l.isActive = active;
+  const addList = useCallback(
+    (list: TokenList) => {
+      setActiveLists((prev) => {
+        const listExists = prev.some((l) => l.name === list.name);
+        if (listExists) {
+          return !prev.find((l) => l.name === list.name)?.isActive
+            ? prev.map((l) =>
+                l.name === list.name ? { ...l, isActive: true } : l,
+              )
+            : prev;
+        } else {
+          return [...prev, list];
         }
-        return l;
-      }),
-    );
-  };
+      });
+    },
+    [setActiveLists],
+  );
 
   const getTokensByChainId = (chainId: number) => {
     return lists
       .filter((l) => l.isActive)
-      .flatMap((t) => t.tokens)
+      .flatMap((l) =>
+        l.tokens.map((t) => ({ ...t, isCustom: l.name === "Custom" })),
+      )
       .filter((t) => t.chainId === chainId);
   };
 
