@@ -1,10 +1,10 @@
-import { baseSepolia, base } from "viem/chains";
+import { baseSepolia, mainnet } from "viem/chains";
 import { environment } from "utils/environment";
 import { Environment } from "@axis-finance/env";
 import type { Address } from "@axis-finance/types";
 import { metadataRegistryAbi } from "./axis-metadata-registry-abi";
 
-// TODO: move to ui-libs/packages/deployments
+// TODO: use @axis-finance/deployments for all deployed curator registries
 const deployments = {
   testnet: {
     chainId: baseSepolia.id,
@@ -12,11 +12,10 @@ const deployments = {
     blockNumber: 19947467n,
     abi: metadataRegistryAbi,
   },
-  // TODO: update to base and set address/blockNumber when deployed to mainnet
   production: {
-    chainId: base.id,
-    address: "0xA12307d3cba3F0854cf92faDce07f7bff0B6a2BA" as Address,
-    blockNumber: 25170144n,
+    chainId: mainnet.id,
+    address: "0x7020638419355ae9FB5a124c580a05226AEa9158" as Address,
+    blockNumber: 22135366n,
     abi: metadataRegistryAbi,
   },
 } as const;
