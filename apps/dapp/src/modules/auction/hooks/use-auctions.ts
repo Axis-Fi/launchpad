@@ -81,6 +81,8 @@ export function useAuctions({ curator }: UseAuctionsArgs = {}): AuctionsResult {
         isSecure: isSecureAuction(preparedAuction),
       } as Auction;
     })
+
+    .filter(tempFilter) //TODO: REMOVE -- ADDED TEMPORARILY
     .sort(sortAuction);
 
   //Fetch missing metadata directly from IPFS gateway
@@ -121,4 +123,12 @@ function isCuratorAddress(address: Address, curator?: Curator) {
   return Array.isArray(curator.address)
     ? curator.address.includes(address.toLowerCase() as Address)
     : curator.address.toLowerCase() === address.toLowerCase();
+}
+
+// Temporary filter to avoid spoilers for certain auctions
+function tempFilter(auction: Auction) {
+  const chainId = 11155111;
+  const lots = [3, 5, 6, 7, 10, 11];
+
+  return !(lots.includes(+auction.lotId) && auction.chainId === chainId);
 }
