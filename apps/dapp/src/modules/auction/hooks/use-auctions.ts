@@ -84,31 +84,30 @@ export function useAuctions({ curator }: UseAuctionsArgs = {}): AuctionsResult {
     .sort(sortAuction);
 
   //Fetch missing metadata directly from IPFS gateway
-  const missingMetadataQuery = useQueries({
-    queries: auctions.map((a) => ({
-      // eslint-disable-next-line @tanstack/query/exhaustive-deps
-      queryKey: ["auction-metadata", a.id],
-      queryFn: async () => {
-        if (a.info != null || isLoading) return a;
-        return fetchAuctionMetadata(a);
+  const { data: auctionsWithFallbackData, ...missingMetadataquery } =
+    useQueries({
+      queries: auctions.map((a) => ({
+        queryKey: ["auction-metadata", a.id],
+        enabled: isSuccess,
+        queryFn: async () => {
+          if (a.info) return a;
+          return fetchAuctionMetadata(a);
+        },
+      })),
+      combine: (results) => {
+        return {
+          data: results.map((result) => result.data),
+          isPending: results.some((result) => result.isPending),
+          errors: results.map((result) => result.error),
+          hasResults: !results.every((result) => result.isPending),
+        };
       },
-    })),
-    combine: (results) => {
-      return {
-        data: results.map((result) => result.data),
-        pending: results.some((result) => result.isPending),
-        errors: results.map((result) => result.error),
-        hasResults: !results.every((result) => result.isPending),
-      };
-    },
-  });
-
-  const auctionsWithFallbackData = missingMetadataQuery.data;
+    });
 
   return {
-    data: (missingMetadataQuery.hasResults
-      ? auctionsWithFallbackData.filter((a) => !!a)
-      : auctions) as Auction[],
+    data: missingMetadataquery.isPending
+      ? auctions
+      : (auctionsWithFallbackData as Auction[]),
     isLoading,
     refetch,
     isRefetching,
