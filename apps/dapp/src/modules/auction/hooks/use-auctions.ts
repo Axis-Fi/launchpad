@@ -81,34 +81,35 @@ export function useAuctions({ curator }: UseAuctionsArgs = {}): AuctionsResult {
         isSecure: isSecureAuction(preparedAuction),
       } as Auction;
     })
+
+    .filter(tempFilter) //TODO: REMOVE -- ADDED TEMPORARILY
     .sort(sortAuction);
 
   //Fetch missing metadata directly from IPFS gateway
-  const missingMetadataQuery = useQueries({
-    queries: auctions.map((a) => ({
-      // eslint-disable-next-line @tanstack/query/exhaustive-deps
-      queryKey: ["auction-metadata", a.id],
-      queryFn: async () => {
-        if (a.info != null || isLoading) return a;
-        return fetchAuctionMetadata(a);
+  const { data: auctionsWithFallbackData, ...missingMetadataquery } =
+    useQueries({
+      queries: auctions.map((a) => ({
+        queryKey: ["auction-metadata", a.id],
+        enabled: isSuccess,
+        queryFn: async () => {
+          if (a.info) return a;
+          return fetchAuctionMetadata(a);
+        },
+      })),
+      combine: (results) => {
+        return {
+          data: results.map((result) => result.data),
+          isPending: results.some((result) => result.isPending),
+          errors: results.map((result) => result.error),
+          hasResults: !results.every((result) => result.isPending),
+        };
       },
-    })),
-    combine: (results) => {
-      return {
-        data: results.map((result) => result.data),
-        pending: results.some((result) => result.isPending),
-        errors: results.map((result) => result.error),
-        hasResults: !results.every((result) => result.isPending),
-      };
-    },
-  });
-
-  const auctionsWithFallbackData = missingMetadataQuery.data;
+    });
 
   return {
-    data: (missingMetadataQuery.hasResults
-      ? auctionsWithFallbackData.filter((a) => !!a)
-      : auctions) as Auction[],
+    data: missingMetadataquery.isPending
+      ? auctions
+      : (auctionsWithFallbackData as Auction[]),
     isLoading,
     refetch,
     isRefetching,
@@ -122,4 +123,12 @@ function isCuratorAddress(address: Address, curator?: Curator) {
   return Array.isArray(curator.address)
     ? curator.address.includes(address.toLowerCase() as Address)
     : curator.address.toLowerCase() === address.toLowerCase();
+}
+
+// Temporary filter to avoid spoilers for certain auctions
+function tempFilter(auction: Auction) {
+  const chainId = 11155111;
+  const lots = [3, 5, 6, 7, 10, 11];
+
+  return !(lots.includes(+auction.lotId) && auction.chainId === chainId);
 }

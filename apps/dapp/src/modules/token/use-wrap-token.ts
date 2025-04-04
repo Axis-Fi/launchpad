@@ -36,11 +36,7 @@ export default function useWrapperContract({
 
   const { data: wrapHash, ...wrapTx } = useWriteContract();
 
-  const { data: gasEstimate } = useEstimateGas(
-    wrapData?.request
-      ? { ...wrapData.request, account: wrapData.request.account ?? undefined }
-      : undefined,
-  );
+  const { data: gasEstimate } = useEstimateGas(wrapData?.request);
 
   const wrapReceipt = useWaitForTransactionReceipt({ hash: wrapHash });
   const wrap = () =>

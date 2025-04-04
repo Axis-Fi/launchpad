@@ -214,10 +214,11 @@ const schema = z
   })
   .refine(
     (data) =>
-      !environment.isProduction ||
-      addDays(data.start, 1).getTime() < data.deadline.getTime(),
+      environment.isProduction
+        ? addDays(data.start, 1).getTime() < data.deadline.getTime()
+        : addHours(data.start, 1).getTime() < data.deadline.getTime(),
     {
-      message: "Deadline needs to be at least 1 day after the start",
+      message: `Deadline needs to be at least 1 ${environment.isProduction ? "day" : "hour"} after the start`,
       path: ["deadline"],
     },
   )

@@ -1,7 +1,7 @@
 {
   "name": "dapp",
   "private": true,
-  "version": "1.0.27",
+  "version": "1.0.29",
   "type": "module",
   "engines": {
     "node": ">=21.6.0"
@@ -33,11 +33,11 @@
   "dependencies": {
     "@axis-finance/abis": "0.0.3",
     "@axis-finance/auto-signer-provider": "^0.0.1",
-    "@axis-finance/cloak": "0.0.14",
-    "@axis-finance/curator-api": "0.0.25",
-    "@axis-finance/deployments": "0.0.12",
-    "@axis-finance/env": "0.0.14",
-    "@axis-finance/sdk": "0.0.36",
+    "@axis-finance/cloak": "0.0.19",
+    "@axis-finance/curator-api": "0.0.31",
+    "@axis-finance/deployments": "0.0.15",
+    "@axis-finance/env": "0.0.19",
+    "@axis-finance/sdk": "0.0.41",
     "@axis-finance/subgraph-client": "0.0.11",
     "@axis-finance/types": "0.0.21",
     "@fleek-platform/sdk": "^3.5.1",
@@ -69,17 +69,17 @@
     "react-scroll": "^1.9.0",
     "react-use-wizard": "^2.3.0",
     "recharts": "^2.12.0",
-    "viem": "2.24.2",
+    "viem": "2.17.3",
     "vite-plugin-node-polyfills": "^0.17.0",
     "vite-tsconfig-paths": "^4.3.1",
-    "wagmi": "2.14.15"
+    "wagmi": "2.5.2"
   },
   "devDependencies": {
     "@axis-finance/eslint-config": "0.0.2",
     "@axis-finance/typescript-config": "0.0.2",
     "@chromatic-com/storybook": "^1.4.0",
     "@dotenvx/dotenvx": "^1.7.0",
-    "@hookform/devtools": "^4.3.1",
+    "@hookform/devtools": "4.3.1",
     "@openapitools/openapi-generator-cli": "^2.9.0",
     "@storybook/addon-essentials": "^8.1.1",
     "@storybook/addon-interactions": "^8.1.1",

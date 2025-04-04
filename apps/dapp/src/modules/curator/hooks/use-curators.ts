@@ -21,6 +21,9 @@ type CuratorRegisteredOrUpdatedEvent = {
 
 type UseCuratorEventsReturn = UseQueryResult<CuratorProfile[]> | null;
 
+// These curators shouldn't show up on production as they're for testing purposes only
+const testCuratorXids = ["444567658", "1901956375275831296"];
+
 const useCurators = (): UseCuratorEventsReturn => {
   const publicClient = usePublicClient({
     chainId: curatorRegistryDeployment.chainId,
@@ -47,7 +50,12 @@ const useCurators = (): UseCuratorEventsReturn => {
 
       curatorEvents.forEach((event: CuratorRegisteredOrUpdatedEvent) => {
         const xId = event.args.xId!.toString();
-        if (shouldRestrictCurators && !axisFollowing!.includes(xId)) return;
+        if (
+          shouldRestrictCurators &&
+          (!axisFollowing!.includes(xId) || testCuratorXids.includes(xId))
+        ) {
+          return;
+        }
 
         latestIpfsProfileCid.set(xId, event.args.ipfsCID!);
       });
