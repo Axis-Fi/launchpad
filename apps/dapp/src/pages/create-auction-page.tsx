@@ -214,7 +214,7 @@ const schema = z
   })
   .refine(
     (data) =>
-      environment.isProduction &&
+      !environment.isProduction ||
       addDays(data.start, 1).getTime() < data.deadline.getTime(),
     {
       message: "Deadline needs to be at least 1 day after the start",
@@ -1012,7 +1012,9 @@ export default function CreateAuctionPage() {
                 : getLinearVestingParams({
                     expiry:
                       getTimestamp(values.vestingStart ?? values.start) +
-                      getDuration(Number(values.vestingDuration)),
+                      Math.floor(
+                        getDuration(parseFloat(values.vestingDuration)),
+                      ),
                     start: getTimestamp(values.vestingStart ?? values.start),
                   }),
             wrapDerivative: false,
