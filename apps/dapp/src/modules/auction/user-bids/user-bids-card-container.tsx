@@ -49,16 +49,16 @@ const getCardStatus = ({
     return "AUCTION_FAILED";
   }
 
+  if (!userHasBids) {
+    return "USER_HAS_NO_BIDS";
+  }
+
   if (auctionIsVesting) {
     return "AUCTION_VESTING";
   }
 
   if (userHasBids) {
     return "USER_HAS_BIDS";
-  }
-
-  if (!userHasBids) {
-    return "USER_HAS_NO_BIDS";
   }
 
   return "ERROR";
@@ -82,16 +82,16 @@ export function UserBidsCardContainer({ auction }: PropsWithAuction) {
       return <AuctionFailedCard auction={auction} />;
     }
 
+    case "USER_HAS_NO_BIDS": {
+      return <NoUserBidsCard />;
+    }
+
     case "AUCTION_VESTING": {
       return <VestingCard auction={auction} />;
     }
 
     case "USER_HAS_BIDS": {
       return <UserBidsCard auction={auction} />;
-    }
-
-    case "USER_HAS_NO_BIDS": {
-      return <NoUserBidsCard />;
     }
 
     case "ERROR": {
