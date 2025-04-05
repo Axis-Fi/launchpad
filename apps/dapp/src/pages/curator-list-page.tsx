@@ -10,10 +10,8 @@ import { useCurators } from "modules/curator/hooks/use-curators";
 import type { CuratorProfile } from "modules/app/ipfs-api";
 import { useMediaQueries } from "loaders/use-media-queries";
 
-type SCCurator = Omit<Curator, "options"> & { options?: { fromSC: true } };
-
 // TODO: remove concept of "static curators" and just use the curator profiles once they're migrated
-const curatorProfileToCurator = (profile: CuratorProfile): SCCurator => ({
+const curatorProfileToCurator = (profile: CuratorProfile): Curator => ({
   id: profile.id,
   type: "curator",
   name: profile.name,
