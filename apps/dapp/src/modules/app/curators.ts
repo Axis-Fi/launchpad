@@ -1,6 +1,14 @@
 import type { Address, Curator } from "@axis-finance/types";
 
+const cm = {
+  address: "0x9B2863545b4df77D0cFe95802b5572656241c9aa",
+  options: {
+    fromSC: true,
+  },
+} as unknown as Curator;
+
 export const allowedCurators: Curator[] = [
+  cm,
   {
     id: "baseline",
     name: "Baseline Markets",

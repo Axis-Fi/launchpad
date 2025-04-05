@@ -24,7 +24,9 @@ const curatorProfileToCurator = (profile: CuratorProfile): Curator => ({
 });
 
 export default function CuratorListPage() {
-  const [newestStaticCurator, ...staticCurators] = allowedCurators;
+  const [newestStaticCurator, ...staticCurators] = allowedCurators.filter(
+    (c) => !c.options?.fromSC,
+  );
   const curatorsQuery = useCurators()!;
   const curators = curatorsQuery.data ?? [];
 
