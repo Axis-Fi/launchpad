@@ -37,6 +37,7 @@ export type CuratorProfile = {
   };
   options?: {
     hideName?: boolean;
+    fromSc?: boolean;
   };
 };
 
