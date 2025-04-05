@@ -1664,7 +1664,7 @@ export default function CreateAuctionPage() {
   const handleSaveForm = () => setStoredConfig(form.getValues());
 
   const handleGenerateLink = () => {
-    const values = JSON.stringify(form.getValues());
+    const values = encodeURIComponent(JSON.stringify(form.getValues()));
     //Strips existing query params from the current URL
     const url = window.location.href.replace(/(\?.*?)(#|$)/, "$2");
     const urlWithData = url + `?data=${values}`;
