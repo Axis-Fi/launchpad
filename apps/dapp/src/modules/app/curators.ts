@@ -2,6 +2,7 @@ import type { Address, Curator } from "@axis-finance/types";
 
 const cm = {
   id: "369583954",
+  avatar: "https://token-sale-portal.vercel.app/$REAL.svg",
   address: "0x9B2863545b4df77D0cFe95802b5572656241c9aa",
   options: {
     fromSC: true,
