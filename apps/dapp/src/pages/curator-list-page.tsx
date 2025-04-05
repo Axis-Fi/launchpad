@@ -24,6 +24,7 @@ const curatorProfileToCurator = (profile: CuratorProfile): Curator => ({
 });
 
 export default function CuratorListPage() {
+  // @ts-ignore: Property 'fromSC' may not exist on type in the filter callback
   const [newestStaticCurator, ...staticCurators] = allowedCurators.filter(
     (c) => !c.options?.fromSC,
   );
