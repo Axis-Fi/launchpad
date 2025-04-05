@@ -4,10 +4,7 @@ import { getAuctionStatus } from "modules/auction/utils/get-auction-status";
 import { sortAuction } from "modules/auction/utils/sort-auctions";
 import { formatAuctionTokens } from "modules/auction/utils/format-tokens";
 import { getAuctionType } from "modules/auction/utils/get-auction-type";
-import {
-  isPreviousBaselineAuction,
-  isSecureAuction,
-} from "modules/auction/utils/malicious-auction-filters";
+import { isSecureAuction } from "modules/auction/utils/malicious-auction-filters";
 import { getChainId } from "src/utils/chain";
 import { useTokenLists } from "state/tokenlist";
 import { useQueryAll } from "loaders/use-query-all";
@@ -53,10 +50,7 @@ export function useAuctions({ curator }: UseAuctionsArgs = {}): AuctionsResult {
 
   const auctions = filteredAuctions
     .filter(
-      (a) =>
-        !curator ||
-        (isCuratorAddress(a.curator as Address, targetCurator) &&
-          (a.curatorApproved || isPreviousBaselineAuction(a))),
+      (a) => !curator || isCuratorAddress(a.curator as Address, targetCurator),
     )
     .map((auction) => {
       const type = getAuctionType(auction.auctionType);
