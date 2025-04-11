@@ -150,7 +150,7 @@ export function BidList(props: BidListProps) {
   const [onlyUserBids, setOnlyUserBids] = React.useState(false);
   const { index: bidIndex } = useBidIndex(
     props.auction,
-    BigInt(bidToRefund?.bidId ?? -1),
+    bidToRefund?.bidId ? BigInt(bidToRefund.bidId) : undefined,
   );
 
   const mappedBids = React.useMemo(
@@ -181,9 +181,9 @@ export function BidList(props: BidListProps) {
   const isLoading = refund.isPending || refundReceipt.isLoading;
 
   const handleRefund = (bidId?: string) => {
-    if (bidId === undefined || bidIndex === undefined)
+    if (bidId === undefined || bidIndex === undefined) {
       throw new Error("Unable to get bidId for refund");
-
+    }
     refund.writeContract({
       abi: auctionHouse.abi,
       address: auctionHouse.address,
@@ -200,7 +200,7 @@ export function BidList(props: BidListProps) {
         id: "actions",
         cell: (info) => {
           const bid = info.row.original;
-          const isLive = props.auction.status === "live";
+          const isLive = true;
           if (!address || !isLive) return;
           if (bid.bidder.toLowerCase() !== address.toLowerCase()) return;
           if (bid.status === "claimed" && !bid.settledAmountOut) return;
