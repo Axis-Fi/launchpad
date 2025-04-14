@@ -24,7 +24,7 @@ export function useHasPrivateKey({
     query: { enabled },
   });
 
-  const privateKey = data?.[9];
+  const privateKey = data?.[9] !== 0n;
 
   return {
     data: query.isSuccess && !!privateKey,

@@ -4,7 +4,7 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import type { Auction, AuctionId, BatchAuction } from "@axis-finance/types";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import {
   useSimulateContract,
   useWaitForTransactionReceipt,
@@ -68,7 +68,7 @@ export const useDecryptBids = (auction: BatchAuction) => {
 
   const hints = hintsQuery.data as Hex[];
 
-  //Send bids to the contract for decryption
+  //Submit private key and some bids to be decrypted
   const { data: submitPKCall, ...submitPKCallQuery } = useSimulateContract({
     address: emp.address,
     abi: emp.abi,
@@ -76,7 +76,7 @@ export const useDecryptBids = (auction: BatchAuction) => {
     chainId: auction.chainId,
     args: [
       BigInt(auction.lotId),
-      BigInt(privateKeyQuery.data ?? 0),
+      BigInt(privateKeyQuery.data ?? 0n),
       BigInt(hints?.length ?? 0),
       hints,
     ],
@@ -93,7 +93,7 @@ export const useDecryptBids = (auction: BatchAuction) => {
     functionName: "decryptAndSortBids",
     chainId: auction.chainId,
     args: [BigInt(auction.lotId), BigInt(hints?.length ?? 0), hints],
-    query: { enabled: privateKeyQuery.isSuccess },
+    query: { enabled: isPKSubmitted && privateKeyQuery.isSuccess },
   });
 
   const decrypt = useWriteContract();
@@ -107,7 +107,6 @@ export const useDecryptBids = (auction: BatchAuction) => {
   };
 
   const queryClient = useQueryClient();
-  const decryptTxnSucceeded = useRef(false);
 
   useEffect(() => {
     if (
@@ -120,30 +119,36 @@ export const useDecryptBids = (auction: BatchAuction) => {
   }, [isPKSubmitted, submitPkReceipt.isSuccess]);
 
   useEffect(() => {
-    if (decryptTxnSucceeded.current || !decryptReceipt.isSuccess) {
-      return;
+    const totalBidsRemaining =
+      (auction.formatted?.totalBids ?? 0) -
+      (auction.formatted?.totalBidsClaimed ?? 0);
+
+    if (decryptReceipt.isSuccess || submitPkReceipt.isSuccess) {
+      /** Update bids to decrypted to show the correct progress*/
+      if ((auction.formatted?.totalBidsDecrypted ?? 0) < totalBidsRemaining) {
+        optimisticUpdate(
+          queryClient,
+          queryKey,
+          (cachedAuction: GetBatchAuctionLotQuery) =>
+            auctionCache.updateDecryptedBids(cachedAuction, DECRYPT_NUM),
+        );
+
+        return;
+      }
+      /** Optimistically update the auction status to "decrypted" */
+      optimisticUpdate(
+        queryClient,
+        queryKey,
+        (cachedAuction: GetBatchAuctionLotQuery) =>
+          auctionCache.updateStatus(cachedAuction, "decrypted"),
+      );
     }
-
-    decryptTxnSucceeded.current = true;
-
-    if (!hintsQuery.isRefetching) {
-      hintsQuery.refetch();
-    }
-
-    /** Optimistically update the auction status to "decrypted" */
-    optimisticUpdate(
-      queryClient,
-      queryKey,
-      (cachedAuction: GetBatchAuctionLotQuery) =>
-        auctionCache.updateStatus(cachedAuction, "decrypted"),
-    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
+    submitPkReceipt.isSuccess,
+    submitPkReceipt.isRefetching,
     decryptReceipt.isSuccess,
-    hintsQuery.isRefetching,
-    hintsQuery.refetch,
-    queryClient,
-    queryKey,
+    decryptReceipt.isRefetching,
   ]);
 
   const error = [
@@ -165,7 +170,7 @@ export const useDecryptBids = (auction: BatchAuction) => {
   return {
     nextBids: privateKeyQuery,
     decryptTx: isPKSubmitted ? decrypt : submitPk,
-    decryptReceipt: isPKSubmitted ? decryptReceipt : submitPk,
+    decryptReceipt: isPKSubmitted ? decryptReceipt : submitPkReceipt,
     handleDecryption,
     error,
     isWaiting,
