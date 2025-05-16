@@ -27,6 +27,10 @@ This Turborepo includes the following packages and applications:
 - `packages/ui`: Axis UI component library (shadcn + tailwind)
 - `config/tailwind-config`: Shared TailwindCSS configs
 
+# Deploying Axis to a new chain
+
+To deploy Axis to a new chain, please follow the instructions in the [DEPLOY.md](./DEPLOY.md) file.
+
 ## Contributing
 
 Thank you for your interest in contributing to Axis `launchpad`! Please read our [CONTRIBUTION.md](./CONTRIBUTING.md) guide to understand our development process and how to contribute effectively.
