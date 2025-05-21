@@ -10,12 +10,12 @@ export const stubGetBatchAuctionLotQuery = (
   overrides: Pick<BatchAuctionLot, "id" | "lotId" | "chain">,
 ): GetBatchAuctionLotQuery => {
   const { id, lotId, chain } = overrides;
-
+  console.log({ id, lotId, chain });
   return {
     batchAuctionLot: {
       id,
       chain,
-      auctionHouse: "0xba0000ac450437406583980336fe93ab2752999f",
+      auctionHouse: "0xba0000c28179ce533233a943d432eddd154e62a3",
       aborted: null,
       cancelled: null,
       lotId,
@@ -24,7 +24,7 @@ export const stubGetBatchAuctionLotQuery = (
       createdDate: "2024-08-16T15:13:32.000Z",
       createdTransactionHash:
         "0x0638a2a2dce4de91bbe0572bc0ed8189900e72d6286fb0a5b909724886c7b9c9",
-      capacityInitial: "1111",
+      capacityInitial: "10000",
       start: "1723821300",
       info: [
         {
@@ -65,7 +65,7 @@ export const stubGetBatchAuctionLotQuery = (
         },
       ],
       conclusion: "3000000000",
-      auctionType: "01EMPA",
+      auctionType: "FPBA",
       seller: "0xc4a209cf95b9d6aca011aa37b5cfd6f40d29890f",
       derivativeType: null,
       wrapDerivative: false,
@@ -86,16 +86,16 @@ export const stubGetBatchAuctionLotQuery = (
       linearVesting: null,
       baseToken: {
         totalSupply: "11000000000000000000000000",
-        address: "0xb24d0b6ae015dc6fd279e330db101bb890d8060c",
+        address: "0x493f79a2839ef984a78f7ff7002e1901e93aa2d3",
         decimals: "18",
-        symbol: "SLO",
-        name: "Stormlight Orbs",
+        symbol: "AXIS",
+        name: "Test payout token",
       },
       quoteToken: {
-        address: "0x47f12cce28d1a2ac9184777fa8a993c6067df728",
+        address: "0x4c9d75fbdf764d05df654340a48f85bc0216f8ab",
         decimals: "18",
-        symbol: "USDB",
-        name: "USDB",
+        symbol: "USDC",
+        name: "USDC",
       },
       created: {
         infoHash: "QmfAj4n1CxG8BfkpsrQBa3cFbPuw4FveDS4ZYQxyEgV6WK",
@@ -106,17 +106,16 @@ export const stubGetBatchAuctionLotQuery = (
       bidsDecrypted: [],
       bidsClaimed: [],
       bidsRefunded: [],
-      encryptedMarginalPrice: {
-        id,
+      encryptedMarginalPrice: null,
+      fixedPrice: {
+        id: `${chain}-0xba0000c28179ce533233a943d432eddd154e62a3-${lotId}`,
         status: "created",
         settlementSuccessful: false,
-        minPrice: "1",
-        minFilled: "555.5",
-        minBidSize: "10",
-        marginalPrice: null,
+        price: "1",
+        minFilled: "55.5",
         hasPartialFill: null,
+        partialBidId: null,
       },
-      fixedPrice: null,
       settled: null,
     },
   };

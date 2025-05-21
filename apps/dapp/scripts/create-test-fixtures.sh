@@ -47,7 +47,7 @@ if [ -n "$TEST_WALLET" ]; then
 fi
 
 echo "Running Cypress to create test fixtures..."
-pnpm start-test dev $VITE_APP_URL 'cypress run --quiet --config "specPattern=cypress/create-fixtures.ts"'
+pnpm start-test dev-quiet $VITE_APP_URL 'cypress open --config "specPattern=cypress/create-fixtures.ts"' 
 CYPRESS_EXIT_CODE=$?
 
 # check if cypress test fixture creation was successful

@@ -1,21 +1,20 @@
+import { LAUNCH_LOT_ID } from "./create-fixtures";
+
 const BASE_URL = Cypress.env("VITE_APP_URL");
 
-// Mainnet chain ID for mainnet build testing
-const blastSepoliaChainId = "168587773";
-
-// Testnet chain ID for testnet build testing
-const baseChainId = "8453";
-
-const LAUNCH_ID =
-  Cypress.env("VITE_TESTNET") === "true" ? blastSepoliaChainId : baseChainId;
+const BASE_SEPOLIA_CHAIN_ID = "84532";
 
 const URLS = {
   HOME: `${BASE_URL}/#/`,
-  CREATE_LAUNCH: `${BASE_URL}/#/create/auction`,
+  CREATE_LAUNCH: (params?: unknown) =>
+    `${BASE_URL}/#/create/auction?data=${JSON.stringify(params)}`,
   CURATOR: `${BASE_URL}/#/curator`,
   CURATORS: `${BASE_URL}/#/curators`,
   REFERRALS: `${BASE_URL}/#/refer`,
-  LAUNCH: `${BASE_URL}/#/${LAUNCH_ID}/0`,
+  LAUNCH: (
+    chainId: string = BASE_SEPOLIA_CHAIN_ID,
+    lotId: string = LAUNCH_LOT_ID,
+  ) => `${BASE_URL}/#/${chainId}/${lotId}`,
 
   /** TESTNET ONLY PAGES */
   FAUCET: `${BASE_URL}/#/faucet`,
@@ -44,6 +43,7 @@ const QUERIES = {
     DEPLOY_BUTTON: testId("deploy-button"),
   },
   MINT: {
+    ADDRESS_FIELD: testId("mint-address"),
     AMOUNT_FIELD: testId("mint-amount"),
     MINT_BUTTON: testId("mint-button"),
     SUCCESS_MESSAGE: testId("mint-success-message"),
@@ -73,10 +73,20 @@ const QUERIES = {
     SUBMIT_BUTTON: testId("create-launch-submit-button"),
     SUCCESS_BUTTON: testId("create-launch-success-button"),
   },
+  VIEW_LAUNCH: {
+    AUCTION_BID_CARD: testId("auction-bid-card"),
+    AMOUNT_INPUT: testId("bid-amount-input"),
+    PRICE_INPUT: testId("bid-price-input"),
+    BID_SUBMIT_BUTTON: testId("bid-submit-button"),
+    TX_DIALOG: testId("tx-dialog"),
+    TX_DIALOG_TITLE: testId("tx-dialog-title"),
+    TX_DIALOG_TRIGGER_BUTTON: testId("tx-dialog-trigger-button"),
+    TX_DIALOG_CONFIRM_BUTTON: testId("tx-dialog-confirm-button"),
+  },
 };
 
 const TIME = {
-  TRANSACTION_TIMEOUT: 20 * 1000,
+  TXN_TIMEOUT: 20 * 1000,
 };
 
 export { URLS, QUERIES, TIME };

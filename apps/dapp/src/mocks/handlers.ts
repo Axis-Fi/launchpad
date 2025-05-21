@@ -1,6 +1,6 @@
 import { graphql, HttpResponse } from "msw";
 import { stubGetAuctionLotsQuery } from "./stubs/get-auction-lots-query";
-import { stubGetBatchAuctionLotQuery } from "./stubs/get-batch-auction-lot-query";
+import { stubGetBatchAuctionLotQuery } from "./stubs/fpb/get-batch-auction-lot-query";
 import { extractChainName } from "./utils";
 import { getChainById } from "utils/chain";
 

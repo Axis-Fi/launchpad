@@ -1,6 +1,7 @@
 /// <reference types="cypress" />
 
 import { URLS } from "./constants";
+const isTestnet = Cypress.env("VITE_TESTNET") === "true";
 
 // These tests just ensure that none of the pages have been inadvertently broken by any code changes
 describe("smoke tests", () => {
@@ -10,7 +11,7 @@ describe("smoke tests", () => {
   });
 
   it("renders create launch page", () => {
-    cy.visit(URLS.CREATE_LAUNCH);
+    cy.visit(URLS.CREATE_LAUNCH());
     cy.shouldRenderPageWithId("__AXIS_CREATE_LAUNCH_PAGE__");
   });
 
@@ -25,11 +26,13 @@ describe("smoke tests", () => {
   });
 
   it("renders launch page", () => {
-    cy.visit(URLS.LAUNCH);
+    const [mainnetChainId, testnetChainId] = ["8453", "84532"];
+    const chainId = isTestnet ? testnetChainId : mainnetChainId;
+    cy.visit(URLS.LAUNCH(chainId));
     cy.shouldRenderPageWithId("__AXIS_LAUNCH_PAGE__");
   });
 
-  if (Cypress.env("VITE_TESTNET") === "true") {
+  if (isTestnet) {
     it("renders faucet page", () => {
       cy.visit(URLS.FAUCET);
       cy.shouldRenderPageWithId("__AXIS_FAUCET_PAGE__");
