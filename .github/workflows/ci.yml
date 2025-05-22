@@ -52,12 +52,6 @@ jobs:
         run: pnpm cypress install
 
       - name: Debug test script
-        run: |
-          ls -la scripts/
-          cat scripts/test.sh
-          which bash
-
-      - name: Debug test script2
         run: pnpm test2
 
       - name: Run unit, smoke & e2e tests
