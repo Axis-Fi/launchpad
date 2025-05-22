@@ -53,3 +53,6 @@ jobs:
 
       - name: Run unit, smoke & e2e tests
         run: pnpm test
+        env:
+          TERM: xterm
+          CI: true
