@@ -27,7 +27,7 @@
     "xxx": "pnpm env:mainnet -- pnpm dev-quiet",
     "smoke": "concurrently --names 'mainnet,testnet' --group --prefix-colors 'cyan,green' --kill-others-on-fail --timings --handle-input 'pnpm smoke:mainnet' 'pnpm smoke:testnet'",
     "test:unit": "vitest run",
-    "test": "dotenvx run -f .env.testnet -- pnpm @smoke ",
+    "test": "./scripts/e2e.sh",
     "test2": "./scripts/test.sh",
     "local-rpc": "./scripts/local-rpc.sh",
     "create-test-fixtures": "./scripts/create-test-fixtures.sh"
