@@ -11,6 +11,8 @@ describe("fixed price launch", () => {
 
     cy.visit(URLS.LAUNCH());
 
+    cy.wait(1000);
+
     // Type 1000 as the bid amount
     cy.get(VIEW_LAUNCH.AMOUNT_INPUT).clear().type("1000");
 
