@@ -19,8 +19,8 @@ if ! nc -z $VITE_APP_HOST $VITE_APP_PORT &>/dev/null; then
 fi
 
 # Wait for services to be ready
-echo "Waiting for services..."
-wait-on -t 60000 $VITE_APP_URL
+echo "Waiting for server..." $VITE_APP_URL
+wait-on -t 120000 $VITE_APP_URL
 
 # Run cypress
 echo "Running cypress..."
