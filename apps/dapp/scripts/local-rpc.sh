@@ -18,6 +18,16 @@ PORT=${ANVIL_PORT:-8545}
 FUND_AMOUNT=${TEST_WALLET_FUND_AMOUNT:-10}
 CHAIN_STATE_FILE="cypress/state.json"
 
+cleanup() {
+  echo "Killing anvil..."
+  if [ -n "$ANVIL_PID" ] && ps -p "$ANVIL_PID" > /dev/null; then
+    kill "$ANVIL_PID" 2>/dev/null || kill -9 "$ANVIL_PID" 2>/dev/null
+  fi
+  wait "$ANVIL_PID" 2>/dev/null
+}
+
+trap cleanup EXIT INT TERM
+
 # check if test fixtures are already setup
 if [ ! -f "$CHAIN_STATE_FILE" ]; then
   echo "Test suite fixtures not found, creating..."
@@ -42,4 +52,8 @@ anvil \
   --fork-url $ANVIL_FORK_URL \
   --load-state $CHAIN_STATE_FILE \
   $([ "$1" = "-s" ] && echo "--silent") \
-  --port $PORT
+  --port $PORT &
+
+ANVIL_PID=$!
+
+wait $ANVIL_PID

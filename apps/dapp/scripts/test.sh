@@ -1,4 +1,5 @@
 #!/bin/bash
+set -x
 
 concurrently \
  --names "unit,smoke,e2e" \

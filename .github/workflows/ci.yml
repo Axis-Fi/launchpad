@@ -28,12 +28,11 @@ jobs:
       - name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
 
-      - name: Clean up potential stale Xvfb locks (Cypress e2e tests)
+      - name: Clean stale Xvfb locks
         run: |
-          sudo rm -f /tmp/.X*-lock
-          sudo rm -f /tmp/.X11-unix/X*
+          sudo rm -f /tmp/.X-lock /tmp/.X11-unix/X || true
 
-      - name: Install Cypress dependencies
+      - name: Install Cypress system dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libnss3 libxss1 libasound2 libxtst6 xauth xvfb
@@ -52,5 +51,8 @@ jobs:
       - name: Install Cypress (if not cached already)
         run: pnpm cypress install
 
-      - name: Run tests
+      - name: Run unit, smoke & e2e tests
         run: pnpm test
+        env:
+          TERM: xterm
+          CI: true

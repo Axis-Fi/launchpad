@@ -92,10 +92,10 @@ export const stubGetBatchAuctionLotQuery = (
         name: "Stormlight Orbs",
       },
       quoteToken: {
-        address: "0x47f12cce28d1a2ac9184777fa8a993c6067df728",
+        address: "0x8e7e3e449a6a5d36c810fc692ce26a1e862abb66",
         decimals: "18",
-        symbol: "USDB",
-        name: "USDB",
+        symbol: "USDC",
+        name: "USDC",
       },
       created: {
         infoHash: "QmfAj4n1CxG8BfkpsrQBa3cFbPuw4FveDS4ZYQxyEgV6WK",

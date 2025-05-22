@@ -61,6 +61,7 @@ export function AuctionBidInput({
                 <TokenAmountInput
                   {...field}
                   disabled={disabled}
+                  data-testid="bid-amount-input"
                   label="Spend Amount"
                   balance={formatUnits(balance, auction.quoteToken.decimals)}
                   limit={
@@ -117,6 +118,7 @@ export function AuctionBidInput({
                 <TokenAmountInput
                   {...field}
                   label="Bid Price"
+                  data-testid="bid-price-input"
                   tokenLabel={`${auction.quoteToken.symbol} per ${auction.baseToken.symbol}`}
                   disabled={disabled}
                   disableMaxButton={true}

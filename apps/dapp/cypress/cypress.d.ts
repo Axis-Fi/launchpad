@@ -6,6 +6,7 @@ declare namespace Cypress {
     shouldRenderPageWithId(id: string): Chainable<void>;
     connectWallet(): Chainable<void>;
     deployToken(symbol: string, name: string): Chainable<string | undefined>;
+    mintToken(address: string, amount?: string): Chainable<string | undefined>;
     deployTokenAndMint(
       symbol: string,
       name: string,

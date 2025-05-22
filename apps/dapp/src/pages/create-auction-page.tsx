@@ -1557,6 +1557,7 @@ export default function CreateAuctionPage() {
     form.setValue(
       "payoutTokenBalance",
       formatUnits(payoutTokenBalance ?? BigInt(0), payoutTokenDecimals ?? 0),
+      { shouldValidate: true },
     );
   }, [form, payoutTokenBalance, payoutTokenDecimals]);
 
