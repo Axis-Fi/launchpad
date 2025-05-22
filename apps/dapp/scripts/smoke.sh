@@ -26,7 +26,7 @@ fi
 
 # Wait for server to be ready
 echo "Waiting for preview server..."
-wait-on $VITE_APP_URL
+wait-on -t 60000 $VITE_APP_URL
 
 # Run smoke tests
 echo "Running smoke tests..."

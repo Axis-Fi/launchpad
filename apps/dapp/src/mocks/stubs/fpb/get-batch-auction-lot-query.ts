@@ -3,10 +3,13 @@ import type {
   GetBatchAuctionLotQuery,
 } from "@axis-finance/subgraph-client";
 import { allowedCurators } from "modules/app/curators";
+import { Address } from "viem";
 
-const allowedCurator = Array.isArray(allowedCurators[0].address[0])
-  ? allowedCurators[0].address[0]
-  : allowedCurators[0].address;
+const allowedCurator = (
+  Array.isArray(allowedCurators[0].address[0])
+    ? allowedCurators[0].address[0]
+    : allowedCurators[0].address
+) as Address;
 
 export const stubGetBatchAuctionLotQuery = (
   overrides: Pick<BatchAuctionLot, "id" | "lotId" | "chain">,

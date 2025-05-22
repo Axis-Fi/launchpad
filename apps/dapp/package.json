@@ -25,7 +25,7 @@
     "smoke:mainnet": "pnpm env:mainnet -- pnpm @smoke",
     "smoke:testnet": "pnpm env:testnet -- pnpm @smoke",
     "xxx": "pnpm env:mainnet -- pnpm dev-quiet",
-    "smoke": "concurrently --group --names 'mainnet,testnet' --prefix-colors 'cyan,green' --kill-others-on-fail --timings --handle-input 'pnpm smoke:mainnet' 'pnpm smoke:testnet'",
+    "smoke": "concurrently --names 'mainnet,testnet' --prefix-colors 'cyan,green' --kill-others-on-fail --timings --handle-input 'pnpm smoke:mainnet' 'pnpm smoke:testnet'",
     "test:unit": "vitest run",
     "test": "./scripts/test.sh",
     "local-rpc": "./scripts/local-rpc.sh",
