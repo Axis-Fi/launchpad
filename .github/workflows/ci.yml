@@ -51,8 +51,5 @@ jobs:
       - name: Install Cypress (if not cached already)
         run: pnpm cypress install
 
-      - name: Debug test script
-        run: pnpm test2
-
       - name: Run unit, smoke & e2e tests
         run: pnpm test
