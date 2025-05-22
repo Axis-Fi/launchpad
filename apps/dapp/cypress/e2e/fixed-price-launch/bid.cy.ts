@@ -7,11 +7,15 @@ describe("fixed price launch", () => {
     cy.visit(URLS.HOME);
     cy.connectWallet();
 
-    cy.wait(1000);
-
     cy.visit(URLS.LAUNCH());
 
-    cy.wait(1000);
+    cy.get("body").then(($body) => {
+      if ($body.text().includes("SWITCH TO")) {
+        cy.get("button")
+          .contains(/SWITCH TO/i)
+          .click();
+      }
+    });
 
     // Type 1000 as the bid amount
     cy.get(VIEW_LAUNCH.AMOUNT_INPUT).clear().type("1000");
