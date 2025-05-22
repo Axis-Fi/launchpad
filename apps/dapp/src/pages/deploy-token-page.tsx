@@ -21,6 +21,7 @@ import { Address, isAddress } from "viem";
 const schema = z.object({
   name: z.string(),
   symbol: z.string(),
+  decimals: z.number().default(18),
 });
 
 export type TokenConfig = z.infer<typeof schema>;

@@ -1,18 +1,36 @@
 #!/bin/bash
 
-concurrently \
- --kill-others \
- --kill-others-on-fail \
- --success first \
- "nc -z $VITE_APP_HOST $VITE_APP_PORT &>/dev/null && tail || pnpm preview" \
- "wait-on $VITE_APP_URL && cypress run --browser chrome --spec 'cypress/smoke.cy.ts'"
+cleanup() {
+    echo "Cleaning up..."
+    local pid=$(lsof -ti:$VITE_APP_PORT 2>/dev/null)
+    if [ -n "$pid" ]; then
+        echo "Killing process $pid on port $VITE_APP_PORT"
+        kill $pid 2>/dev/null
+        sleep 1
+        # Force kill if still running
+        if kill -0 $pid 2>/dev/null; then
+            kill -9 $pid 2>/dev/null
+        fi
+    fi
 
-# concurrently \
-#  --group \
-#  --names "mainnet,testnet" \
-#  --prefix-colors "cyan,green" \
-#  --kill-others-on-fail \
-#  --timings \
-#  --handle-input \
-#  "pnpm smoke:mainnet" \
-#  "pnpm smoke:testnet"
+}
+
+# Set trap to run cleanup on exit, interrupt, or termination
+trap cleanup EXIT INT TERM
+
+# Start preview server if not already running
+if ! nc -z $VITE_APP_HOST $VITE_APP_PORT &>/dev/null; then
+    echo "Starting preview server..."
+    pnpm preview &
+fi
+
+# Wait for server to be ready
+echo "Waiting for preview server..."
+wait-on $VITE_APP_URL
+
+# Run smoke tests
+echo "Running smoke tests..."
+cypress run --browser chrome --spec "cypress/smoke.cy.ts"
+CYPRESS_EXIT_CODE=$?
+
+exit $CYPRESS_EXIT_CODE

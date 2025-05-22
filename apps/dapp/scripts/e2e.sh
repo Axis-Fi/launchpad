@@ -4,19 +4,35 @@ set -a
 source .env.e2e
 set +a
 
-concurrently \
- --kill-others \
- --kill-others-on-fail \
- --success first \
- "nc -z localhost $ANVIL_PORT &>/dev/null && tail || pnpm local-rpc -s" \
- "nc -z $VITE_APP_HOST $VITE_APP_PORT &>/dev/null && tail || pnpm dev-quiet" \
- "wait-on $VITE_APP_URL && cypress run --config 'specPattern=cypress/e2e/**/*.cy.ts'"
+# Start anvil if not already running
+if ! nc -z localhost $ANVIL_PORT &>/dev/null; then
+    echo "Starting anvil..."
+    pnpm local-rpc -s &
+    ANVIL_PID=$!
+fi
 
-# notes: only runs the rpc/dev server if its not already running
-# tail is superfluous, but required to keep the process from exiting, as concurrently
-# returns the exit code of the first process that exits, which should be cypress.
-# the reason for this is so that this command can run independently, or in a pipeline without killing 
-# the dev/rpc server that the rest of the pipeline might depend on i.e. the killing is handled higher up
+# Start dev server if not already running  
+if ! nc -z $VITE_APP_HOST $VITE_APP_PORT &>/dev/null; then
+    echo "Starting dev server..."
+    pnpm dev-quiet &
+    DEV_PID=$!
+fi
 
+# Wait for services to be ready
+echo "Waiting for services..."
+wait-on -t 60000 $VITE_APP_URL
 
-#  "nc -z $VITE_APP_HOST $VITE_APP_PORT &>/dev/null && tail || pnpm preview" \
+# Run cypress
+echo "Running cypress..."
+cypress run --config 'specPattern=cypress/e2e/**/*.cy.ts'
+CYPRESS_EXIT_CODE=$?
+
+if [ -n "$ANVIL_PID" ]; then
+    kill $ANVIL_PID 2>/dev/null
+fi
+if [ -n "$DEV_PID" ]; then
+    kill $DEV_PID 2>/dev/null
+fi
+
+# Exit with cypress exit code
+exit $CYPRESS_EXIT_CODE

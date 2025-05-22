@@ -4,13 +4,15 @@ import type {
 } from "@axis-finance/subgraph-client";
 import { allowedCurators } from "modules/app/curators";
 
-const allowedCurator = allowedCurators[0].address[0];
+const allowedCurator = Array.isArray(allowedCurators[0].address[0])
+  ? allowedCurators[0].address[0]
+  : allowedCurators[0].address;
 
 export const stubGetBatchAuctionLotQuery = (
   overrides: Pick<BatchAuctionLot, "id" | "lotId" | "chain">,
 ): GetBatchAuctionLotQuery => {
   const { id, lotId, chain } = overrides;
-  console.log({ id, lotId, chain });
+
   return {
     batchAuctionLot: {
       id,

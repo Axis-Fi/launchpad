@@ -8,6 +8,7 @@ import { connectors } from "utils/rainbow-kit-connectors";
 
 const getWagmiConfig = (): Config => {
   if (import.meta.env.VITE_ENABLE_AUTOSIGNING_WALLET === "true") {
+    console.log("Autosigning wallet enabled");
     injectAutoSignerProvider({
       debug: false,
       rpcUrl: "http://127.0.0.1:8545",
